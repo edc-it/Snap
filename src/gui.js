@@ -3700,6 +3700,14 @@ IDE_Morph.prototype.settingsMenu = function () {
             true
         );
     }
+    menu.addItem(
+        'Default table column width',
+        'userSetDefaultColWidth'
+    );
+    menu.addItem(
+        'Default table row height',
+        'userSetDefaultRowHeight'
+    );
     addPreference(
         'Live coding support',
         () => Process.prototype.enableLiveCoding =
@@ -6068,6 +6076,42 @@ IDE_Morph.prototype.setStageExtent = function (aPoint) {
     }
 };
 
+// TableMorph default row and column dimensions
+IDE_Morph.prototype.userSetDefaultColWidth = function () {
+    new DialogBoxMorph(
+        this,
+        width => MorphicPreferences.defaultColWidth = width,
+        this
+    ).prompt(
+        "Default Table Column Width?",
+        MorphicPreferences.defaultColWidth ?
+            MorphicPreferences.defaultColWidth.toString() :
+            '50',
+        this.world(),
+        null,
+        null,
+        null,
+        true
+    );
+};
+
+IDE_Morph.prototype.userSetDefaultRowHeight = function () {
+    new DialogBoxMorph(
+        this,
+        height => MorphicPreferences.defaultRowHeight = height,
+        this
+    ).prompt(
+        "Default Table Row Height?",
+        MorphicPreferences.defaultRowHeight ?
+            MorphicPreferences.defaultRowHeight.toString() :
+            '10',
+        this.world(),
+        null,
+        null,
+        null,
+        true
+    );
+};
 // IDE_Morph dragging threshold (internal feature)
 
 IDE_Morph.prototype.userSetDragThreshold = function () {
