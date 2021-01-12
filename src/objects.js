@@ -7619,6 +7619,8 @@ StageMorph.prototype.enableCodeMapping = false;
 StageMorph.prototype.enableInheritance = true;
 StageMorph.prototype.enableSublistIDs = false;
 StageMorph.prototype.enablePenLogging = false; // for SVG generation
+StageMorph.prototype.defaultColWidth = null;
+StageMorph.prototype.defaultRowHeight = null;
 
 // StageMorph instance creation
 

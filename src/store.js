@@ -398,7 +398,14 @@ SnapSerializer.prototype.rawLoadProjectModel = function (xmlNode, remixID) {
         StageMorph.prototype.enablePenLogging =
             (model.stage.attributes.penlog === 'true');
     }
-
+    if (model.stage.attributes.defaultColWidth) {
+        StageMorph.prototype.defaultColWidth =
+            parseInt(model.stage.attributes.defaultColWidth);
+    }
+    if (model.stage.attributes.defaultRowHeight) {
+        StageMorph.prototype.defaultRowHeight =
+            parseInt(model.stage.attributes.defaultRowHeight);
+    }
     model.pentrails = model.stage.childNamed('pentrails');
     if (model.pentrails) {
         project.pentrails = new Image();
@@ -1712,6 +1719,8 @@ StageMorph.prototype.toXML = function (serializer) {
             '<stage name="@" width="@" height="@" ' +
             'costume="@" color="@,@,@,@" tempo="@" threadsafe="@" ' +
             'penlog="@" ' +
+            'defaultColWidth="@"' +
+            'defaultRowHeight="@"' +
             '%' +
             'volume="@" ' +
             'pan="@" ' +
@@ -1752,6 +1761,8 @@ StageMorph.prototype.toXML = function (serializer) {
         this.getTempo(),
         this.isThreadSafe,
         this.enablePenLogging,
+        StageMorph.prototype.defaultColWidth,
+        StageMorph.prototype.defaultRowHeight,
         this.instrument ?
                 ' instrument="' + parseInt(this.instrument) + '" ' : '',
         this.volume,

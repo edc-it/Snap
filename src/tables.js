@@ -534,9 +534,11 @@ TableMorph.prototype.init = function (
     this.textHeight = Math.ceil(
         fontHeight(SyntaxElementMorph.prototype.fontSize) * 1.3
     );
-    this.rowHeight = rowHeight || MorphicPreferences.defaultRowHeight || this.textHeight;
+    this.rowHeight = rowHeight || StageMorph.prototype.defaultRowHeight ||
+        this.textHeight;
     this.colWidths = colWidths || [];
-    this.globalColWidth = globalColWidth || MorphicPreferences.defaultColWidth || Math.ceil(this.textHeight * 3.5);
+    this.globalColWidth = globalColWidth ||
+        StageMorph.prototype.defaultColWidth || Math.ceil(this.textHeight * 3.5);
     this.colLabelHeight = colLabelHeight || this.textHeight;
     this.padding = padding || SyntaxElementMorph.prototype.scale; //1;
     this.tableVersion = this.table.lastChanged;

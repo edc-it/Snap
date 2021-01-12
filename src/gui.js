@@ -4494,6 +4494,8 @@ IDE_Morph.prototype.newProject = function () {
     StageMorph.prototype.enableInheritance = true;
     StageMorph.prototype.enableSublistIDs = false;
     StageMorph.prototype.enablePenLogging = false;
+    StageMorph.prototype.defaultColWidth = null;
+    StageMorph.prototype.defaultRowHeight = null;
     SpriteMorph.prototype.useFlatLineEnds = false;
     Process.prototype.enableLiveCoding = false;
     Process.prototype.enableHyperOps = true;
@@ -4985,6 +4987,8 @@ IDE_Morph.prototype.rawOpenProjectString = function (str) {
     StageMorph.prototype.enableInheritance = true;
     StageMorph.prototype.enableSublistIDs = false;
     StageMorph.prototype.enablePenLogging = false;
+    StageMorph.prototype.defaultColWidth = null;
+    StageMorph.prototype.defaultRowHeight = null;
     Process.prototype.enableLiveCoding = false;
     this.hasUnsavedEdits = false;
     if (Process.prototype.isCatchingErrors) {
@@ -5026,6 +5030,8 @@ IDE_Morph.prototype.rawOpenCloudDataString = function (str) {
     StageMorph.prototype.enableInheritance = true;
     StageMorph.prototype.enableSublistIDs = false;
     StageMorph.prototype.enablePenLogging = false;
+    StageMorph.prototype.defaultColWidth = null;
+    StageMorph.prototype.defaultRowHeight = null;
     Process.prototype.enableLiveCoding = false;
     this.hasUnsavedEdits = false;
     if (Process.prototype.isCatchingErrors) {
@@ -6077,15 +6083,16 @@ IDE_Morph.prototype.setStageExtent = function (aPoint) {
 };
 
 // TableMorph default row and column dimensions
+
 IDE_Morph.prototype.userSetDefaultColWidth = function () {
     new DialogBoxMorph(
         this,
-        width => MorphicPreferences.defaultColWidth = width,
+        width => StageMorph.prototype.defaultColWidth = width,
         this
     ).prompt(
         "Default Table Column Width?",
-        MorphicPreferences.defaultColWidth ?
-            MorphicPreferences.defaultColWidth.toString() :
+        StageMorph.prototype.defaultColWidth ?
+            StageMorph.prototype.defaultColWidth.toString() :
             '50',
         this.world(),
         null,
@@ -6098,12 +6105,12 @@ IDE_Morph.prototype.userSetDefaultColWidth = function () {
 IDE_Morph.prototype.userSetDefaultRowHeight = function () {
     new DialogBoxMorph(
         this,
-        height => MorphicPreferences.defaultRowHeight = height,
+        height => StageMorph.prototype.defaultRowHeight = height,
         this
     ).prompt(
         "Default Table Row Height?",
-        MorphicPreferences.defaultRowHeight ?
-            MorphicPreferences.defaultRowHeight.toString() :
+        StageMorph.prototype.defaultRowHeight ?
+            StageMorph.prototype.defaultRowHeight.toString() :
             '10',
         this.world(),
         null,
@@ -6112,6 +6119,7 @@ IDE_Morph.prototype.userSetDefaultRowHeight = function () {
         true
     );
 };
+
 // IDE_Morph dragging threshold (internal feature)
 
 IDE_Morph.prototype.userSetDragThreshold = function () {
