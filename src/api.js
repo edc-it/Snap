@@ -58,6 +58,12 @@
 
             - IDE_Morph.prototype.newList()
 
+        Access the Serialized Project
+
+            - IDE_Morph.prototype.getProjectXML()
+            - IDE_Morph.prototype.loadProjectXML(projectXML)
+            - IDE_Morph.prototype.unsavedChanges()
+
     Getting hold of an ide can usually be achieved by
     evaluating:
 
@@ -196,11 +202,11 @@
 
 */
 
-/*global modules, IDE_Morph, isString, Map, List*/
+/*global modules, IDE_Morph, isString, Map, List, world*/
 
 // Global stuff ////////////////////////////////////////////////////////
 
-modules.api = '2020-July-06';
+modules.api = '2020-December-22';
 
 // IDE_Morph external communication API - experimental
 /*
@@ -208,6 +214,18 @@ modules.api = '2020-July-06';
     add message listeners to Snap! broadcasts and access
     global variables
 */
+
+window.onmessage = function (event) {
+    // make the API accessible from outside an iframe
+    var ide = world.children[0];
+    window.top.postMessage(
+        {
+            selector: event.data.selector,
+            response: ide[event.data.selector].apply(ide, event.data.params)
+        },
+        '*'
+    );
+};
 
 IDE_Morph.prototype.broadcast = function(message, callback) {
     // same as using the broadcast block - launch all scripts
@@ -312,4 +330,20 @@ IDE_Morph.prototype.newList = function (array) {
     // return a new Snap list the shape of the given array, if any
     // nested array will not be automatically converted to nested lists
     return new List(array);
+};
+
+IDE_Morph.prototype.getProjectXML = function () {
+    return this.serializer.serialize(this.stage);
+};
+
+IDE_Morph.prototype.loadProjectXML = function (projectXML) {
+    // load the project encoded as xml-String, no questions asked
+    // terminate animations and scheduled ops
+    this.onNextStep = null;
+    this.world().animations = [];
+    this.openProjectString(projectXML);
+};
+
+IDE_Morph.prototype.unsavedChanges = function () {
+    return this.hasUnsavedEdits;
 };

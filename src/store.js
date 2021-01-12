@@ -61,7 +61,7 @@ normalizeCanvas, contains*/
 
 // Global stuff ////////////////////////////////////////////////////////
 
-modules.store = '2020-July-08';
+modules.store = '2020-December-11';
 
 
 // XML_Serializer ///////////////////////////////////////////////////////
@@ -398,7 +398,14 @@ SnapSerializer.prototype.rawLoadProjectModel = function (xmlNode, remixID) {
         StageMorph.prototype.enablePenLogging =
             (model.stage.attributes.penlog === 'true');
     }
-
+    if (model.stage.attributes.defaultColWidth) {
+        StageMorph.prototype.defaultColWidth =
+            parseInt(model.stage.attributes.defaultColWidth);
+    }
+    if (model.stage.attributes.defaultRowHeight) {
+        StageMorph.prototype.defaultRowHeight =
+            parseInt(model.stage.attributes.defaultRowHeight);
+    }
     model.pentrails = model.stage.childNamed('pentrails');
     if (model.pentrails) {
         project.pentrails = new Image();
@@ -772,6 +779,7 @@ SnapSerializer.prototype.loadSprites = function (xmlString, ide) {
         sprite.gotoXY(+model.attributes.x || 0, +model.attributes.y || 0);
         this.loadObject(sprite, model);
         sprite.fixLayout();
+        sprite.pauseGenericHatBlocks();
     });
 
     // restore inheritance and nesting associations
@@ -809,6 +817,7 @@ SnapSerializer.prototype.loadSprites = function (xmlString, ide) {
     ide.stage.rerender();
     ide.createCorral();
     ide.fixLayout();
+    ide.toggleAppMode(ide.isAppMode);
 };
 
 SnapSerializer.prototype.loadMedia = function (xmlString) {
@@ -1645,8 +1654,9 @@ SnapSerializer.prototype.loadValue = function (model, object) {
         return v;
     case 'sound':
         audio = new Audio();
-        audio.src = model.attributes.sound;
         v = new Sound(audio, model.attributes.name);
+        audio.oncanplaythrough = () => v.loaded = true;
+        audio.src = model.attributes.sound;
         if (Object.prototype.hasOwnProperty.call(
                 model.attributes,
                 'mediaID'
@@ -1716,6 +1726,7 @@ SnapSerializer.prototype.openProject = function (project, ide) {
         ide.hasChangedMedia = true;
     }
     project.stage.fixLayout();
+    project.stage.pauseGenericHatBlocks();
     ide.createCorral();
     ide.selectSprite(sprite);
     ide.fixLayout();
@@ -1780,6 +1791,8 @@ StageMorph.prototype.toXML = function (serializer) {
             '<stage name="@" width="@" height="@" ' +
             'costume="@" color="@,@,@,@" tempo="@" threadsafe="@" ' +
             'penlog="@" ' +
+            'defaultColWidth="@"' +
+            'defaultRowHeight="@"' +
             '%' +
             'volume="@" ' +
             'pan="@" ' +
@@ -1821,6 +1834,8 @@ StageMorph.prototype.toXML = function (serializer) {
         this.getTempo(),
         this.isThreadSafe,
         this.enablePenLogging,
+        StageMorph.prototype.defaultColWidth,
+        StageMorph.prototype.defaultRowHeight,
         this.instrument ?
                 ' instrument="' + parseInt(this.instrument) + '" ' : '',
         this.volume,

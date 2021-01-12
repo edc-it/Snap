@@ -2,6 +2,402 @@
 
 ## in development:
 
+## 6.5.1
+* **New Features:**
+    * experimental (non-hyperized) "not equals" primitive reachable via "relabel"
+* **Notable Changes:**
+    * 10% speed-up for reporters, WARP and TURBO
+    * updated list utilities library, thanks, Brian!
+* **Notable Fixes:**
+    * fixed a bug when changing a Boolean input slot with a default value to numerical type 
+* **Documentation Updates:**
+    * Snap! Manual sources and compiling documentation, thanks, Brian!
+    * updated "contentWindows" part of the Snap! API, thanks, Bernat
+* **Translation Updates:**
+    * Dutch, thanks, Joek!
+
+### 2021-01-11
+* prepared patch
+
+### 2021-01-08
+* updated Snap! Manual and manual compiling documentation, thanks, Brian!
+
+### 2021-01-07
+* updated Snap! API documentation, thanks, Bernat!
+
+### 2021-01-05
+* widgets: fixed a conversion bug when retrieving a numerical value from an input field
+* objects, threads: experimental (non-hyperized) "not equals" primitive reachable via "relabel"
+* Dutch translation update, thanks, Joek!
+* updated list utilities library, thanks, Brian!
+
+### 2021-01-04
+* new dev version
+* threads: optimized frame stepper, reduced frames for input evaluation, 10 % speed-up for reporters, WARP and TURBO
+
+## 6.5.0
+* **New Features:**
+    * warning about "unsaved changes" when opening or creating a new project
+    * visual indication of unsaved changes in the IDE's project label
+    * automatic backup of unsaved changes to localstore, option to restore in the file menu until the first change in the new project
+* **Notable Changes:**
+    * 25% speed-up for reporters, WARP and TURBO
+    * up to 40x speed-up for "new costume from list" reporter primitive 
+    * re-enabled reporter drops in "key _ pressed?" input slot
+* **Notable Fixes:**
+    * fixed a bug in hyperblocks
+    * fixed keyboard formula entry for subtraction
+* **Documentation Updates:**
+    * new Manual for v6.5, thanks, Brian!
+    * added unsavedChanges() method and documentation to the Snap! API
+* **Translation Updates:**
+    * German
+    * Catalan, thanks, Joan!
+    * Russian, thanks, Pavel!
+
+### 2020-12-23
+* Manual updated, thanks, Brian!
+* prepared release
+
+### 2020-12-22
+* threads: up to 40x speed-up for "new costume from list" reporter primitive 
+* api: added unsavedChanges() method and documentation
+* blocks, gui: visual indication of unsaved changes in the IDE's project label
+* Russian translation update, thanks, Pavel!
+
+### 2020-12-21
+* gui: tweaked backup / restore
+* new Manual for v6.5, thanks, Brian!
+* German translation update
+
+### 2020-12-20
+* gui, blocks, objects: keep track of unsaved edits
+
+### 2020-12-19
+* threads: added code-documentation for the WARP/timestamp optimization
+* gui: new auto-backup to localstore feature 
+
+### 2020-12-18
+* threads: optimized scheduler, reduced system calls to Date.now(), 25 % speed-up for reporters, WARP and TURBO
+* threads: fixed a typo in hyperDyadic()
+
+### 2020-12-17
+* blocks: added hook for caching variadic inputs
+* blocks: refactored blockSequence() non-recursively
+* reverted variadic input caching experiment
+
+### 2020-12-16
+* threads, objects: added dev debugging hook for counting yields
+
+### 2020-12-14
+* new dev version
+* objects: fixed keyboard formula entry for subtraction
+* blocks: re-enabled reporter drops in "key _ pressed?" input slot
+
+## 6.4.1
+* **Documentation Updates:**
+    * new Manual for v6.4, thanks, Brian!
+* **Notable Fixes:**
+    * fixed zebra coloring for imported scripts
+
+### 2020-12-14
+* new dev version
+* new Manual for v6.4, thanks, Brian!
+* gui fixed zebra coloring for imported scripts
+* prepared patch
+
+## 6.4.0
+* **New Features:**
+    * ray casting: new "ray length" option in the "relation TO object" primitive
+    * hyperdyadic MIN and MAX primitives reachable via "relabel"
+    * hyperdyadic less / great than or equals primitives reachable via "relabel"
+    * hyperdyadic ATAN2 primitive reachable via "relabel"
+    * new SIGN function in arithmetic dropdown
+* **Notable Changes:**
+    * searching for blocks and keyboard entry now includes the contents of dropdown menus
+    * disabled dropping reporters into certain dropdowns (monadic functions, types, costume attributes, graphic effects, layers, audio attributes, pen attributes, dates, relation, keys, video attributes)
+    * changed VIDEO _ ON _ reporter primitive to be hyper-monadic (second slot)
+    * hyperized OBJECT reporter primitive in sensing 
+* **Notable Fixes:**
+    * keep internal linked-list organization intact for hyperblocks
+    * improved SVG loading in Firefox, thanks, Joan!
+    * prevent browser override for ctrl+o gesture
+    * fixed layout issue when importing a sprite in presentation mode
+* **Translation Updates:**
+    * Spanish, thanks, Joan!
+    * Catalan, thanks, Joan!
+    * Tamil, thanks, Barthdry!
+    * German
+
+### 2020-12-11
+* blocks: fixed special drop-downs for keyboard entry
+* store: fixed layout issue when importing a sprite in presentation mode
+* prepared minor release
+
+### 2020-12-09
+* Tamil translation update, thanks, Barthdry!
+* threads, objects: added hyperdyadic ATAN2 primitive reachable via "relabel"
+* threads: hyperized OBJECT reporter primitive in sensing 
+
+### 2020-12-07
+* GUI: improved SVG loading, thanks, Joan!
+* threads, objects, blocks: compiled multimap, thanks, Brian
+* reverted multimap, let's use a JS-block based custom block to engineer it first
+
+### 2020-12-05
+* objects: alternative collision detection method using the video-cache, commented out for reference.
+* German translation update for "ray length"  
+
+### 2020-12-04
+* threads: refactored raycasting
+* integrated raycasting into "relation TO object" primitive
+
+### 2020-12-03
+* threads: raycasting edge detection, under construction
+
+### 2020-12-02
+* threads, blocks: added SIGN function to monadic dropdown
+* Catalan translation update, thanks, Joan!
+* Morphic: prevent browser override for ctrl+o gesture
+* objects, threads: refactored mouseX / mouseY to use generic coordinate conversion
+
+### 2020-12-01
+* threads, objects: added hyperdyadic MIN and MAX primitives reachable via "relabel"
+* threads, objects: added hyperdyadic less/greaterThanOrEquals prims 
+* blocks: made monadic functions and data types menus static
+* blocks: made costume attribute, graphic effects and layers menus static
+* blocks: made audio attributes menu static
+* blocks: made pen attributes menus static
+* blocks: made sensing attributes menus largely static
+* threads: changed reportVideo() to be hyper-monadic
+* lists: made sure map() doesn't mutate internal list linked-ness
+
+### 2020-11-30
+* threads: keep internal linked-list organization intact for hyperblocks
+* update libraries
+
+### 2020-11-27
+* objects: extended block-search to include dropdown choices in primitives
+* byob, objects: extended block-search to include dropdown choices in custom blocks
+
+### 2020-11-26
+* blocks, objects: refactored input slot specs
+* blocks: refactored special input slot dop-down menus for search
+
+### 2020-11-23
+* new dev version
+
+## 6.3.7
+* **Notable Changes:**
+    * added "loadProjectXML" method to the api
+    * hyperized "atrribute OF sprite" reporter primitive in the sensing category
+    * show the common attributes for sprites in the OF-dropdown by default
+    * hyperized "color/sprite AT location" reporter primitive
+    * hyperized "VIDEO _ ON _" reporter primitive
+* **Documentation Updates:**
+    * API update for "loadProjectXML"
+* **Notable Fixes:**
+    * fixed display of inherited sprite-local variables
+* **Translation Updates:**
+    * Greek, thanks, HM100!
+
+### 2020-11-23
+* Greek translation update, thanks, HM100!
+* prepared patch
+
+### 2020-11-22
+* objects: fixed display of inherited sprite-local variables
+* threads: make sure video capture is turned on before accessing it programmatically 
+
+### 2020-11-21
+* new dev version
+* api: new loadProjectXML() method
+* updated api documentation
+* threads: hyperized "atrribute OF sprite" reporter primitive
+* blocks: show the common attributes for sprites in the OF-dropdown by default
+* threads: hyperized "color/sprite AT location" reporter primitive
+* threads: hyperized "VIDEO _ ON _" reporter primitive
+
+## 6.3.6
+* **Notable Changes:**
+    * changed determining "neighbors" from rectangular to circular perimeter
+* **Notable Fixes:**
+    * fixed a loading bug for projects with watchers on SVG costumes
+    * fixed stretching SVG costumes with fixed aspect ratios in Firefox
+    * only report neighbors that are visible
+* **Translation Updates:**
+    * Italian, thanks, Stefano!
+    * Spanish, thanks, Joan!
+
+### 2020-11-20
+* threads: only report neighbors that are visible, thanks Frederic, for reporting this bug!
+* Italian translation update, thanks, Stefano!
+* Spanish translation update, thanks, Joan!
+* threads, objects: changed determining "neighbors" from rectangular to circular perimeter
+* objects: fixed a loading bug for projects with watchers on SVG costumes
+* prepared patch
+
+### 2020-11-19
+* new dev version
+* objects: rasterize SVGs internally before stretching them, so it all works on Firefox
+
+## 6.3.5
+* **Notable Fixes:**
+    * support exported SVGs to be edited in Inkscape
+
+### 2020-11-19
+* new dev version
+* objects: tweaked exported SVG's color alpha part as stroke-opacity so Inkscape can handle them, sigh.
+* prepared patch
+
+## 6.3.4
+* **Notable Changes:**
+    * added "postMessage" mechanism to the api for communicating with Snap! inside an iFrame, thanks, Bernat!
+* **Documentation Updates:**
+    * API update for "postMessage", thanks, Bernat!
+* **Notable Fixes:**
+    * fixed updating cells showing sprites or costumes inside list watchers
+    * fixed a project loading bug (for watchers showing costumes)
+
+### 2020-11-18
+* new dev version
+* objects: fixed updating cells showing sprites or costumes inside list watchers
+* objects: fixed a project loading bug (for watchers showing costumes)
+* api: new postMessage mechanism, thanks, Bernat!
+* prepared patch
+
+## 6.3.3
+* **Notable Changes:**
+    * added type assertion for numerical value in CHANGE VARIABLE BY NUM block, thanks, Eckart, for the suggestion
+* **Notable Fixes:**
+    * fixed a costume fitting issue, thanks, Joan!
+    * fixed keyboard formula input for "power of", "neg", "lg" and "id"
+    * fixed repositioning sprite after "editRotationPointOnly"
+* **Translation Updates:**
+    * Spanish, thanks, Joan!
+
+### 2020-11-1/
+* blocks, objects: refactored and unified default values for block templates
+* Spanish translation update, thanks, Joan!
+* gui, objects: fixed #2715 - reposition sprite after "editRotationPointOnly"
+* prepared patch
+
+### 2020-11-15
+* new dev version
+* objects: fixed costume fitting, thanks, Joan!
+* objects: fixed keyboard formula input for "power of"
+* objects: fixed keyboard formula input for "neg"
+* objects: fixed keyboard formula input for "lg" and "id"
+* threads: added type assertion for numerical value in CHANGE VARIABLE BY NUM block
+
+## 6.3.2
+* **Notable Changes:**
+    * added meaningful defaults to blocks in the palette that didn't already have them
+* **Notable Fixes:**
+    * fixed a costume-shrinkWrap edgecase bug, thanks, Brian, for reporting it!
+    * fixed dynamic costume-inheritance for PASTE and CUT
+    * fixed being unable to place the cursor at the end of a multi-line text
+
+### 2020-11-12
+* morphic: fixed being unable to place the cursor at the end of a multi-line text
+* prepared patch
+
+### 2020-11-11
+* objects: added meaningful defaults to blocks in the palette that didn't already have them
+* threads: fixed dynamic costume-inheritance for PASTE and CUT
+
+### 2020-11-09
+* new dev version
+* objects: fixed #2712 - a costume-shrinkWrap edgecase bug, thanks, Brian, for reporting it!
+
+## 6.3.1
+* **Notable Fixes:**
+    * fixed PASTE and CUT for the stage
+
+### 2020-11-05
+* new dev version
+* objects: fixed #2709
+* prepared patch
+
+## 6.3.0
+* **New Features:**
+    * new gesture: holding the shift-key when dragging extracts a single command from a stack of blocks
+    * new "extract" single command block context menu option
+    * new CUT FROM command in the pen category
+    * added "pie chart" option to PLOT command in the frequency distribution analysis library
+    * added getProjectXML() method to the API
+    * new noCloud flag that disables cloud access, thanks, Bernat
+* **Notable Changes:**
+    * security: pause generic WHEN hat blocks when loading a project or importing a sprite until the user clicks the green flag or un-pauses the red stop sign, unless opening it with #present:&noRun
+* **Documentation Updates:**
+    * API update
+* **Notable Fixes:**
+    * fixed a translation bug for zero-value menu selection entries
+    * wait until all assets have loaded before auto-triggering the green-flag event
+    * don't show some development-only blocks as search results
+    * fixed "rename costume" dialog title to distinguish between costumes and backgrounds
+* **Translation Updates:**
+    * Russian, thanks, Pavel!
+    * German
+    * French, thanks, Jeremy!
+
+### 2020-11-04
+* prepared minor release
+
+### 2020-11-03
+* Russian translation update, thanks, Pavel!
+* objects: added "relabel" feature for the new "cut from" / "paste on" primitives
+
+### 2020-11-02
+* objects: tweaked drop-shadows for sprites
+* blocks: tweaked drop-shadows for comments
+* objects, threads: added new CUT FROM command to the pen category
+* updated German translation with new "cut from %spr" entry
+* morphic: reverted "unclosable menu prevention", because it broke the search box in the project dialog
+
+### 2020-10-28
+* gui: tweaked wait-until-assets-are-loaded mechanism
+* gui: fixed "rename costume" dialog title to distinguish between costumes and backgrounds
+* German translation update for "rename background" 
+* French translation update
+
+### 2020-10-27
+* gui, objects, store: pause generic WHEN hat blocks when loading a project or importing a sprite until the user clicks the green flag or un-pauses the red stop sign, unless opening it with #present:&noRun
+* morphic: prevent unclosable menus, thanks, Brian B.! 
+
+### 2020-10-26
+* objects: added test for the existence of generic WHEN hat blocks
+
+### 2020-10-23
+* pushed dev version to v6.3.0 because of new features
+* objects: don't show some development-only blocks as search results
+* blocks: fixed a multi-line-text spec typo 
+* blocks: removed unused %month slot
+* blocks: removed unused %lst slot
+
+### 2020-10-22
+* blocks: fixed UNDO/REDO for "extracted" (single) command blocks
+* blocks: refactored userExtractJustThis
+* blocks: refactored userDestroyJustThis
+* blocks: un-hid "extract" menu-option
+* morphic: create drop-shadows just in time
+* blocks: holding the shift-key when dragging extracts a single command from a stack of blocks
+* German translation update for new string "extract" 
+
+### 2020-10-21
+* gui: wait until all costumes have loaded before auto-triggering the green-flag event 
+* gui, objects, store: wait until all sounds have loaded before auto-triggering the green-flag event
+* gui, cloud: added noCloud flag that disables cloud access, thanks, Bernat!
+* blocks: new experimental (hidden) "extract" single command block context menu option
+
+### 2020-10-20
+* added "pie chart" option to PLOT command in the frequency distribution analysis library
+* morphic: enabled zero values for menu selection entries
+* blocks: fixed translation bug for zero-value menu selection entries
+* Russian translation update, thanks, Pavel!
+* api: added getProjectXML() method
+* gui: removed an obsolete comment 
+
 ### 2020-10-15
 * new dev version
 * Russian translation update, thanks, Pavel!
