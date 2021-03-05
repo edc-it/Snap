@@ -192,7 +192,7 @@ attribute, as described in the *Attributes* section.
     <projectMenu>New,Open...,Save,Save As...,0,Export project...,Export blocks...</projectMenu>
     <blockContextMenu>help...,delete block definition...,edit...,0,duplicate,[object HTMLCanvasElement]</blockContextMenu>
     <buttons>
-      <button label="Help">
+      <button label="Help" placement="palette">
         <translations>
           <ca>Ajuda</ca>
           <es>Ayuda</es>
