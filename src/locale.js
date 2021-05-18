@@ -46,7 +46,7 @@
 
 /*global modules, contains*/
 
-modules.locale = '2021-January-05';
+modules.locale = '2021-March-15';
 
 // Global stuff
 
@@ -168,7 +168,7 @@ SnapTranslator.dict.de = {
     'translator_e-mail':
         'jens@moenig.org, jadga.huegle@sap.com',
     'last_changed':
-        '2020-12-21'
+        '2021-03-05'
 };
 
 SnapTranslator.dict.it = {
@@ -377,7 +377,7 @@ SnapTranslator.dict.ca = {
     'translator_e-mail':
         'bernat@snap4arduino.rocks, jguille2@xtec.cat',
     'last_changed':
-        '2020-12-21'
+        '2021-03-14'
 };
 
 SnapTranslator.dict.ca_VA = {
@@ -465,7 +465,7 @@ SnapTranslator.dict.ta = {
     'translator_e-mail':
         'vnkmr7620@gmail.com',
     'last_changed':
-        '2020-12-09'
+        '2021-01-25'
 };
 
 SnapTranslator.dict.te = {
@@ -487,7 +487,7 @@ SnapTranslator.dict.tr = {
     'translator_e-mail':
         'tguneysu@msn.com', // hakanatas@gmail.com, mustafaipekbayrak@gmail.com',
     'last_changed':
-        '2020-09-20'
+        '2021-01-26'
 };
 
 SnapTranslator.dict.hu = {
