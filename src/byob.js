@@ -1076,7 +1076,8 @@ CustomCommandBlockMorph.prototype.userMenu = function () {
         rcvr = this.scriptTarget(),
         myself = this,
         // shiftClicked = this.world().currentKey === 16,
-        menu;
+        menu,
+        microworld = rcvr.parentThatIsA(IDE_Morph).stage.microworld;
 
     function addOption(label, toggle, test, onHint, offHint) {
         var on = '\u2611 ',
@@ -1235,7 +1236,9 @@ CustomCommandBlockMorph.prototype.userMenu = function () {
             }
         } else { // inside a script
             // if global or own method - let the user delete the definition
-            if (this.isGlobal ||
+            if ((!microworld.uneditableBlocks ||
+                this.definition.codeHeader === 'microworld') &&
+                this.isGlobal ||
                 contains(
                     Object.keys(rcvr.ownBlocks()),
                     this.blockSpec
@@ -1252,7 +1255,10 @@ CustomCommandBlockMorph.prototype.userMenu = function () {
             monitor(vName)
         );
     }
-    menu.addItem("edit...", 'edit'); // works also for prototypes
+    if (!microworld.uneditableBlocks ||
+            this.definition.codeHeader === 'microworld') {
+        menu.addItem("edit...", 'edit'); // works also for prototypes
+    }
     return menu;
 };
 

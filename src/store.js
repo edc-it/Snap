@@ -643,6 +643,10 @@ SnapSerializer.prototype.rawLoadProjectModel = function (xmlNode, remixID) {
             project.stage.microworld.enterOnLoad =
                 model.microworld.attributes['enterOnLoad'] === 'true';
         }
+        if (model.microworld.attributes['uneditableBlocks']) {
+            project.stage.microworld.uneditableBlocks =
+                model.microworld.attributes['uneditableBlocks'] === 'true';
+        }
         if (model.microworld.attributes['simpleBlockDialog']) {
             project.stage.microworld.simpleBlockDialog =
                 model.microworld.attributes['simpleBlockDialog'] === 'true';
@@ -2439,7 +2443,7 @@ CommentMorph.prototype.toXML = function (serializer) {
 MicroWorld.prototype.toXML = function (serializer) {
     return serializer.format(
         '<microworld zoom="@" enableKeyboard="@" enterOnLoad="@" ' +
-        'simpleBlockDialog ="@">' +
+        'uneditableBlocks="@ simpleBlockDialog="@">' +
         '<customJS>%</customJS>' +
         '<hiddenMorphs>%</hiddenMorphs>' +
         '<blockSpecs>%</blockSpecs>' +
@@ -2450,6 +2454,7 @@ MicroWorld.prototype.toXML = function (serializer) {
         this.zoom,
         this.enableKeyboard,
         this.enterOnLoad,
+        this.uneditableBlocks,
         this.simpleBlockDialog,
         this.customJS,
         this.hiddenMorphs.join(','),

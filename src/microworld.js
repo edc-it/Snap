@@ -18,6 +18,7 @@ MicroWorld.prototype.init = function () {
     this.customJS = null;
     this.zoom = null;
     this.enterOnLoad = false;
+    this.uneditableBlocks = false;
     this.isActive = false;
     this.suppressedKeyEvents = [];
     this.originalFireKeyEvent = StageMorph.prototype.fireKeyEvent;
