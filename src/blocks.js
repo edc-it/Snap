@@ -5718,6 +5718,16 @@ CommandBlockMorph.prototype.drawBottomRightEdge = function (ctx) {
     ctx.stroke();
 };
 
+// MicroWorld additions
+
+CommandBlockMorph.prototype.beButton = function () {
+    this.dent = -1;
+    this.corner = 1;
+    this.inset = 0;
+    this.isDraggable = false;
+    this.attachTargets = function () { return []; };
+};
+
 // HatBlockMorph ///////////////////////////////////////////////////////
 
 /*
