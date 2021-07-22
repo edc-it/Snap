@@ -1794,8 +1794,8 @@ StageMorph.prototype.toXML = function (serializer) {
             '<stage name="@" width="@" height="@" ' +
             'costume="@" color="@,@,@,@" tempo="@" threadsafe="@" ' +
             'penlog="@" ' +
-            'defaultColWidth="@"' +
-            'defaultRowHeight="@"' +
+            'defaultColWidth="@" ' +
+            'defaultRowHeight="@" ' +
             '%' +
             'volume="@" ' +
             'pan="@" ' +
