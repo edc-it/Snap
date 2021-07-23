@@ -2442,7 +2442,7 @@ CommentMorph.prototype.toXML = function (serializer) {
 MicroWorld.prototype.toXML = function (serializer) {
     return serializer.format(
         '<microworld zoom="@" enableKeyboard="@" enterOnLoad="@" ' +
-        'uneditableBlocks="@ simpleBlockDialog="@">' +
+        'uneditableBlocks="@" simpleBlockDialog="@">' +
         '<customJS>%</customJS>' +
         '<hiddenMorphs>%</hiddenMorphs>' +
         '<blockSpecs>%</blockSpecs>' +
