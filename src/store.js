@@ -63,6 +63,12 @@ normalizeCanvas, contains*/
 
 modules.store = '2021-June-10';
 
+// if we get projects in a newer format, attempt to load them in the new fork
+function redirectToNewVersion() {
+    var hash = window.location.hash;
+    window.location = `https://microworld.edc.org/version/v2/snap.html${hash}`;
+}
+
 
 // XML_Serializer ///////////////////////////////////////////////////////
 /*
@@ -339,7 +345,8 @@ SnapSerializer.prototype.rawLoadProjectModel = function (xmlNode, remixID) {
 
     model = {project: xmlNode };
     if (+xmlNode.attributes.version > this.version) {
-        throw 'Project uses newer version of Serializer';
+        redirectToNewVersion();
+        throw 'Project uses newer version of Serializer. Attempting to redirect to newer version...';
     }
 
     /* Project Info */
@@ -716,6 +723,7 @@ SnapSerializer.prototype.loadBlocks = function (xmlString, targetStage) {
     };
     model = this.parse(xmlString);
     if (+model.attributes.version > this.version) {
+        redirectToNewVersion()
         throw 'Module uses newer version of Serializer';
     }
     this.loadCustomBlocks(stage, model, true);
@@ -746,6 +754,7 @@ SnapSerializer.prototype.loadSprites = function (xmlString, ide) {
 
     model = this.parse(xmlString);
     if (+model.attributes.version > this.version) {
+        redirectToNewVersion()
         throw 'Module uses newer version of Serializer';
     }
     model.childrenNamed('sprite').forEach(model => {
@@ -836,6 +845,7 @@ SnapSerializer.prototype.loadMediaModel = function (xmlNode) {
     var model = xmlNode;
     this.mediaDict = {};
     if (+model.attributes.version > this.version) {
+        redirectToNewVersion()
         throw 'Module uses newer version of Serializer';
     }
     model.children.forEach(model => this.loadValue(model));
