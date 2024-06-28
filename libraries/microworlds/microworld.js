@@ -1,32 +1,30 @@
-// Update 2024-02-13
+// Update 2024-06-28
 var ide = world.children.find(child => {
         return child instanceof IDE_Morph;
     }),
     prefix = 'mw_';
 
-function currentMicroworld(){
+function currentMicroworld() {
     return ide.stage.microworld;
 }
 
-function doIfMicroworld(cb){
-    if(ide.stage.microworld){
+function doIfMicroworld(cb) {
+    if (ide.stage.microworld) {
         cb(ide.stage.microworld);
-    }
-    else {
-        throw new Error("No microworld loaded! Make sure to run primitive "+prefix+"load");
+    } else {
+        throw new Error("No microworld loaded! Make sure to run primitive " + prefix + "load");
     }
 }
 
 SnapExtensions.primitives.set(
-    prefix+'get_spec_from_block(block)',
+    prefix + 'get_spec_from_block(block)',
     (block) => {
-        if(!block.expression){
+        if (!block.expression) {
             return "";
         }
-        if(block.expression.selector && block.expression.selector !== 'evaluateCustomBlock'){
+        if (block.expression.selector && block.expression.selector !== 'evaluateCustomBlock') {
             return block.expression.selector;
-        }
-        else if(block.expression.blockSpec) {
+        } else if (block.expression.blockSpec) {
             return block.expression.blockSpec;
         }
 
@@ -36,7 +34,7 @@ SnapExtensions.primitives.set(
 )
 
 SnapExtensions.primitives.set(
-    prefix+'enter',
+    prefix + 'enter',
     () => {
         doIfMicroworld(microworld => {
             microworld.enter();
@@ -45,7 +43,7 @@ SnapExtensions.primitives.set(
 )
 
 SnapExtensions.primitives.set(
-    prefix+'escape',
+    prefix + 'escape',
     () => {
         doIfMicroworld(microworld => {
             microworld.escape();
@@ -54,7 +52,7 @@ SnapExtensions.primitives.set(
 )
 
 SnapExtensions.primitives.set(
-    prefix+'is_active?',
+    prefix + 'is_active?',
     () => {
         var active = false;
         doIfMicroworld(microworld => {
@@ -65,9 +63,9 @@ SnapExtensions.primitives.set(
 )
 
 SnapExtensions.primitives.set(
-    prefix+'load',
+    prefix + 'load',
     () => {
-        if(!ide.stage.microworld){
+        if (!ide.stage.microworld) {
             ide.stage.microworld = new MicroWorld(ide);
 
             // add the enter/escape options to the Snap! logo
@@ -76,12 +74,16 @@ SnapExtensions.primitives.set(
                 if (ide.stage.microworld && ide.stage.microworld.isActive) {
                     menu.addItem(
                         'Escape microworld',
-                        function () { ide.stage.microworld.escape(); }
+                        function () {
+                            ide.stage.microworld.escape();
+                        }
                     );
                 } else if (ide.stage.microworld) {
                     menu.addItem(
                         'Enter microworld',
-                        function () { ide.stage.microworld.enter(); }
+                        function () {
+                            ide.stage.microworld.enter();
+                        }
                     );
                 }
                 return menu;
@@ -92,25 +94,23 @@ SnapExtensions.primitives.set(
 )
 
 SnapExtensions.primitives.set(
-    prefix+'switch_to_sprite(sprite)',
+    prefix + 'switch_to_sprite(sprite)',
     spriteName => {
         var sprite = ide.sprites.contents.find(eachSprite => eachSprite.name === spriteName);
-        if(sprite){
+        if (sprite) {
             ide.selectSprite(sprite);
         }
     }
 )
 
 SnapExtensions.primitives.set(
-    prefix+'set_block_specs(specs)',
+    prefix + 'set_block_specs(specs)',
     (specs) => {
-        if(!specs){
+        if (!specs) {
             specs = [];
-        }
-        else if(specs.constructor === List){
+        } else if (specs.constructor === List) {
             specs = specs.contents;
-        }
-        else {
+        } else {
             throw new Error("Expecting List of block specs");
         }
         doIfMicroworld(microworld => {
@@ -120,18 +120,15 @@ SnapExtensions.primitives.set(
 )
 
 SnapExtensions.primitives.set(
-    prefix+'set_editable_blocks(specs)',
+    prefix + 'set_editable_blocks(specs)',
     (specs) => {
-        if(!specs){
+        if (!specs) {
             specs = [];
-        }
-        else if(specs === 'all'){
+        } else if (specs === 'all') {
             specs = 'all';
-        }
-        else if(specs.constructor === List){
+        } else if (specs.constructor === List) {
             specs = specs.contents;
-        }
-        else {
+        } else {
             throw new Error("Expecting 'all' or List of block specs");
         }
         doIfMicroworld(microworld => {
@@ -141,7 +138,7 @@ SnapExtensions.primitives.set(
 )
 
 SnapExtensions.primitives.set(
-    prefix+'set_broadcast_after_translate(message)',
+    prefix + 'set_broadcast_after_translate(message)',
     (message) => {
         doIfMicroworld(microworld => {
             microworld.setBroadcastAfterTranslate(message);
@@ -150,7 +147,7 @@ SnapExtensions.primitives.set(
 )
 
 SnapExtensions.primitives.set(
-    prefix+'set_loading_screen_after_translate(showLoading)',
+    prefix + 'set_loading_screen_after_translate(showLoading)',
     (showLoading) => {
         doIfMicroworld(microworld => {
             microworld.setLoadingScreenAfterTranslate(showLoading)
@@ -159,8 +156,8 @@ SnapExtensions.primitives.set(
 )
 
 SnapExtensions.primitives.set(
-    prefix+'show_loading_screen',
-    function() {
+    prefix + 'show_loading_screen',
+    function () {
         doIfMicroworld(microworld => {
             microworld.showLoadingScreen();
         })
@@ -168,23 +165,21 @@ SnapExtensions.primitives.set(
 )
 
 SnapExtensions.primitives.set(
-    prefix+'hide_loading_screen',
-    function() {
+    prefix + 'hide_loading_screen',
+    function () {
         doIfMicroworld(microworld => {
             microworld.hideLoadingScreen();
         })
     }
 )
 SnapExtensions.primitives.set(
-    prefix+'set_button_blocks(specs)',
+    prefix + 'set_button_blocks(specs)',
     (specs) => {
-        if(!specs){
+        if (!specs) {
             specs = [];
-        }
-        else if(specs.constructor === List){
+        } else if (specs.constructor === List) {
             specs = specs.contents;
-        }
-        else {
+        } else {
             throw new Error("Expecting List of block specs");
         }
         doIfMicroworld(microworld => {
@@ -194,15 +189,13 @@ SnapExtensions.primitives.set(
 )
 
 SnapExtensions.primitives.set(
-    prefix+'set_buttons(location, buttons)',
+    prefix + 'set_buttons(location, buttons)',
     (location, buttons) => {
-        if(!buttons){
+        if (!buttons) {
             buttons = [];
-        }
-        else if(buttons.constructor === List){
+        } else if (buttons.constructor === List) {
             buttons = buttons.contents.map(item => JSON.parse(item));
-        }
-        else{
+        } else {
             throw new Error("Expecting List of buttons");
         }
 
@@ -213,25 +206,25 @@ SnapExtensions.primitives.set(
 )
 
 SnapExtensions.primitives.set(
-    prefix+'button_pic(definition)',
-    function(definition) {
+    prefix + 'button_pic(definition)',
+    function (definition) {
 
         function resizeTo(canvas, pct) {
-            const cw=canvas.width;
-            const ch=canvas.height;
+            const cw = canvas.width;
+            const ch = canvas.height;
             const tempCanvas = newCanvas();
             const tctx = tempCanvas.getContext("2d");
-            tempCanvas.width=cw;
-            tempCanvas.height=ch;
-            tctx.drawImage(canvas,0,0);
-            canvas.width*=pct;
-            canvas.height*=pct;
-            const ctx=canvas.getContext('2d');
-            ctx.drawImage(tempCanvas,0,0,cw,ch,0,0,cw*pct,ch*pct);
+            tempCanvas.width = cw;
+            tempCanvas.height = ch;
+            tctx.drawImage(canvas, 0, 0);
+            canvas.width *= pct;
+            canvas.height *= pct;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(tempCanvas, 0, 0, cw, ch, 0, 0, cw * pct, ch * pct);
         }
 
         const microworld = currentMicroworld();
-        if(microworld) {
+        if (microworld) {
             definition = JSON.parse(definition)
             const canvas = microworld.makeButton(definition).fullImage();
             resizeTo(canvas, 10)
@@ -241,15 +234,13 @@ SnapExtensions.primitives.set(
 )
 
 SnapExtensions.primitives.set(
-    prefix+'set_active_buttons(location, labels)',
+    prefix + 'set_active_buttons(location, labels)',
     (location, labels) => {
-        if(!labels){
+        if (!labels) {
             labels = [];
-        }
-        else if(labels.constructor === List){
+        } else if (labels.constructor === List) {
             labels = labels.contents;
-        }
-        else{
+        } else {
             throw new Error("Expecting List of button labels");
         }
 
@@ -260,7 +251,7 @@ SnapExtensions.primitives.set(
 )
 
 SnapExtensions.primitives.set(
-    prefix+'set_hidden_morphs(morphs)',
+    prefix + 'set_hidden_morphs(morphs)',
     morphs => {
         doIfMicroworld(microworld => {
             microworld.setHiddenMorphs(morphs);
@@ -268,8 +259,38 @@ SnapExtensions.primitives.set(
     }
 )
 
+
 SnapExtensions.primitives.set(
-    prefix+'set_menu_items(menu,items)',
+    prefix + 'set_make_block(nameBlockTitle,defaultCategory,showCategories,defaultType,showTypes,isGlobal,showScopes,editorCommentText,editButtonInPalette,applyButtonInEditor,editBlockTypeInEditor)',
+    (nameBlockTitle,
+     defaultCategory,
+     showCategories,
+     defaultType,
+     showTypes,
+     isGlobal,
+     showScopes,
+     editorCommentText,
+     editButtonInPalette,
+     applyButtonInEditor,
+     editBlockTypeInEditor) => {
+        doIfMicroworld(microworld => {
+            microworld.setMakeBlock(nameBlockTitle,
+                defaultCategory,
+                showCategories,
+                defaultType,
+                showTypes,
+                isGlobal,
+                showScopes,
+                editorCommentText,
+                editButtonInPalette,
+                applyButtonInEditor,
+                editBlockTypeInEditor);
+        })
+    }
+)
+
+SnapExtensions.primitives.set(
+    prefix + 'set_menu_items(menu,items)',
     (menu, items) => {
         doIfMicroworld(microworld => {
             microworld.setMenuItems(menu, items);
@@ -278,7 +299,7 @@ SnapExtensions.primitives.set(
 )
 
 SnapExtensions.primitives.set(
-    prefix+'set_enable_keyboard(enable)',
+    prefix + 'set_enable_keyboard(enable)',
     enableKeyboard => {
         doIfMicroworld(microworld => {
             microworld.enableKeyboard = enableKeyboard;
@@ -289,7 +310,7 @@ SnapExtensions.primitives.set(
 )
 
 SnapExtensions.primitives.set(
-    prefix+'set_enable_variables(enable)',
+    prefix + 'set_enable_variables(enable)',
     enableVariables => {
         doIfMicroworld(microworld => {
             microworld.setEnableVariables(enableVariables);
@@ -300,9 +321,9 @@ SnapExtensions.primitives.set(
 // Exposes some of the getters/setters library so we can do this without enabling JS
 // Only exposes settings currently used in microworlds
 SnapExtensions.primitives.set(
-    prefix+'snap_ide_set(param,value)',
-    function(which, value) {
-        var   stage = this.parentThatIsA(StageMorph),
+    prefix + 'snap_ide_set(param,value)',
+    function (which, value) {
+        var stage = this.parentThatIsA(StageMorph),
             ide = stage.parentThatIsA(IDE_Morph),
             world = stage.parentThatIsA(WorldMorph);
 
@@ -313,7 +334,7 @@ SnapExtensions.primitives.set(
                     if (!isNaN(value)) ide.setBlocksScale(Math.min(value, 12));
                     break;
                 case 'Stage size':
-                    if ((value instanceof List) && value.length()==2
+                    if ((value instanceof List) && value.length() == 2
                         && !isNaN(value.at(1)) && !isNaN(value.at(2)))
                         ide.setStageExtent(new Point(value.at(1), value.at(2)));
                     break;
@@ -324,133 +345,181 @@ SnapExtensions.primitives.set(
                     if (value != ide.isAppMode) ide.toggleAppMode();
                     break;
 
-            };
+            }
+            ;
+        } finally {
+            ide.savingPreferences = true;
         }
-        finally {ide.savingPreferences = true;
-        };
+        ;
     }
 )
 
 
 // for backwards compatability
 SnapExtensions.primitives.set(
-    prefix+'set_ide_lang(langCode,message,payload)',
-    function(langCode, message, payload,loadingScreen) {
-        if(currentMicroworld()) {
-            currentMicroworld().changeLanguage(langCode,message,payload,false);
+    prefix + 'set_ide_lang(langCode,message,payload)',
+    function (langCode, message, payload, loadingScreen) {
+        if (currentMicroworld()) {
+            currentMicroworld().changeLanguage(langCode, message, payload, false);
         }
     }
 )
 
 SnapExtensions.primitives.set(
-    prefix+'set_ide_lang(langCode,message,payload,loadingScreen)',
-    function(langCode, message, payload,loadingScreen) {
-        if(currentMicroworld()) {
-            currentMicroworld().changeLanguage(langCode,message,payload,loadingScreen);
+    prefix + 'set_ide_lang(langCode,message,payload,loadingScreen)',
+    function (langCode, message, payload, loadingScreen) {
+        if (currentMicroworld()) {
+            currentMicroworld().changeLanguage(langCode, message, payload, loadingScreen);
         }
     }
 )
 
 SnapExtensions.primitives.set(
-    prefix+'do_define_block(upvar, label, context)',
-    function(upvar, label, context, proc) {
+    prefix + 'do_define_block(upvar, label, context)',
+    function (upvar, label, context, proc) {
         doIfMicroworld(microworld => {
             microworld.doDefineBlock(upvar, label, context, proc)
         })
     }
 )
 
-function MicroWorld (ide) {
+function MicroWorld(ide) {
     this.init(ide);
 }
 
-MicroWorld.prototype.setBlockSpecs = function(specs){
+MicroWorld.prototype.setBlockSpecs = function (specs) {
     this.blockSpecs = specs;
-    if(this.isActive){
+    if (this.isActive) {
         this.loadSpecs();
     }
 
 }
 
-MicroWorld.prototype.setEditableBlocks = function(specs){
+MicroWorld.prototype.setEditableBlocks = function (specs) {
     this.editableBlocks = specs;
 }
 
-MicroWorld.prototype.setBroadcastAfterTranslate = function(message) {
+MicroWorld.prototype.setBroadcastAfterTranslate = function (message) {
     this.broadcastAfterTranslate = message;
 }
 
-MicroWorld.prototype.setLoadingScreenAfterTranslate = function(showLoading) {
+MicroWorld.prototype.setLoadingScreenAfterTranslate = function (showLoading) {
     this.loadingScreenAfterTranslate = true;
 }
 
-MicroWorld.prototype.setButtonBlocks = function(specs){
+MicroWorld.prototype.setButtonBlocks = function (specs) {
     this.buttonBlocks = specs;
-    if(this.isActive){
+    if (this.isActive) {
         this.blocksToButtons(true);
         this.blocksToButtons();
     }
 }
 
-MicroWorld.prototype.setEnableVariables = function(enableVariables){
+MicroWorld.prototype.setEnableVariables = function (enableVariables) {
     this.enableVariables = enableVariables;
-    if(this.isActive){
+    if (this.isActive) {
         this.loadSpecs();
     }
 }
 
-MicroWorld.prototype.setHiddenMorphs = function(morphs){
+MicroWorld.prototype.setHiddenMorphs = function (morphs) {
     var oldIsLoading = this.isLoading;
-    if(this.isActive){
+    if (this.isActive) {
         this.isLoading = true;
         this.showAllMorphs();
         this.isLoading = oldIsLoading;
     }
-    if(!morphs){
+    if (!morphs) {
         this.hiddenMorphs = [];
-    }
-    else{
+    } else {
         this.hiddenMorphs = (morphs).split(",").map(item => item.trim());
     }
 
-    if(this.isActive){
+    if (this.isActive) {
         this.hideAllMorphs();
     }
 }
 
-MicroWorld.prototype.setMenuItems = function(menu, items){
+MicroWorld.prototype.setMenuItems = function (menu, items) {
     this.menus[menu] = (items).split(",").map(item => item.trim());
 }
 
-MicroWorld.prototype.setButtons = function(location, buttons){
-    if(this.isActive){
+MicroWorld.prototype.setButtons = function (location, buttons) {
+    if (this.isActive) {
         this.destroyButtons();
     }
     this.buttonAreas[location].buttons = buttons;
-    if(this.isActive){
+    if (this.isActive) {
         this.makeButtons();
         this.refreshLayouts();
     }
 }
 
-MicroWorld.prototype.setActiveButtons = function(location, labels) {
-    if(this.isActive) {
+MicroWorld.prototype.setActiveButtons = function (location, labels) {
+    if (this.isActive) {
         this.destroyButtons();
     }
     this.buttonAreas[location].active = labels;
-    if(this.isActive){
+    if (this.isActive) {
         this.makeButtons();
         this.refreshLayouts();
     }
 }
 
 
-MicroWorld.prototype.setKeyboard = function(keyboard){
+MicroWorld.prototype.setKeyboard = function (keyboard) {
     ScriptsMorph.prototype.enableKeyboard = keyboard;
-    if(this.isActive){
+    if (this.isActive) {
         this.ide.currentSprite.scripts.updateToolbar();
     }
 }
+
+MicroWorld.prototype.makeBlock = {
+        nameBlockTitle: localize('Make a block'),
+        defaultCategory: null,
+        showCategories: true,
+        defaultType: 'command',
+        showTypes: true,
+        isGlobal: true,
+        showScopes: true,
+        editorCommentText: null,
+        editButtonInPalette: false,
+        applyButtonInEditor: true,
+        editBlockTypeInEditor: true
+    }
+
+MicroWorld.prototype.setMakeBlock = function(
+    nameBlockTitle = MicroWorld.prototype.makeBlock.nameBlockTitle,
+    defaultCategory = MicroWorld.prototype.makeBlock.defaultCategory,
+    showCategories = MicroWorld.prototype.makeBlock.showCategories,
+    defaultType = MicroWorld.prototype.makeBlock.defaultType,
+    showTypes = MicroWorld.prototype.makeBlock.showTypes,
+    isGlobal = MicroWorld.prototype.makeBlock.isGlobal,
+    showScopes = MicroWorld.prototype.makeBlock.showScopes,
+    editorCommentText = MicroWorld.prototype.makeBlock.editorCommentText,
+    editButtonInPalette = MicroWorld.prototype.makeBlock.editButtonInPalette,
+    applyButtonInEditor = MicroWorld.prototype.makeBlock.applyButtonInEditor,
+    editBlockTypeInEditor = MicroWorld.prototype.makeBlock.editBlockTypeInEditor
+
+) {
+    this.makeBlock = {
+        nameBlockTitle,
+        defaultCategory,
+        showCategories,
+        defaultType,
+        showTypes,
+        isGlobal,
+        showScopes,
+        editorCommentText,
+        editButtonInPalette,
+        applyButtonInEditor,
+        editBlockTypeInEditor
+    }
+
+    this.refreshLayouts();
+}
+
+
 
 MicroWorld.prototype.init = function (ide) {
     this.ide = ide;
@@ -462,9 +531,9 @@ MicroWorld.prototype.init = function (ide) {
 
     this.menus = {
         projectMenu: ['notes...', '0', 'New', 'Open...', 'Save', 'Save as...', 'Restore unsaved project', 'Clear backup', '0', 'Import...', 'Export project...', 'Export blocks...', 'Unused blocks...', 'Export summary', 'Export summary with drop-shadows', 'Export all sprites as pic...', '0', 'Scenes...', 'New scene', 'Add scene...', '0', 'Libraries', 'Costumes', 'Backgrounds', 'Sounds...', 'Undelete sprites'],
-        blockContextMenu: ['help...', '0', 'rename...', 'rename all...', 'inherited', 'transient', 'hide', '0', 'header mapping...', 'code mapping...', 'relabel...', 'compile', 'uncompile', 'duplicate', 'duplicate single block', 'extract', 'delete', 'add comment', 'script pic...', 'result pic...', 'download script', '0','unringify', 'ringify', '0','senders...','receivers...',],
+        blockContextMenu: ['help...', '0', 'rename...', 'rename all...', 'inherited', 'transient', 'hide', '0', 'header mapping...', 'code mapping...', 'relabel...', 'compile', 'uncompile', 'duplicate', 'duplicate single block', 'extract', 'delete', 'add comment', 'script pic...', 'result pic...', 'download script', '0', 'unringify', 'ringify', '0', 'senders...', 'receivers...',],
         paletteContextMenu: ['find blocks...', 'hide primitives', 'show primitives', 'make a category...', 'delete a category...'],
-        scriptsContextMenu: ['undrop', 'redrop', '0', 'clean up', 'add comment', 'scripts pic...', '0',  'inherited', 'make a block...'],
+        scriptsContextMenu: ['undrop', 'redrop', '0', 'clean up', 'add comment', 'scripts pic...', '0', 'inherited', 'make a block...'],
         stageContextMenu: ['edit', 'show all', 'pic...', '0', 'pen trails', 'svg...'],
         spriteContextMenu: ['duplicate', 'clone', '0', 'delete', 'move', 'rotate', 'pivot', 'edit', 'detatch all parts', 'export...'],
         settingsMenu: ['Language...', 'Zoom blocks...', 'Fade blocks', 'Stage size...', 'Dragging threshold...', 'Microphone resolution...', 'JavaScript extensions', 'Extension blocks', 'Retina display support', 'Input sliders', 'Turbo mode', 'Visible stepping', 'Log pen vectors', 'Ternary Boolean slots', 'Camera support', 'Blurred shadows', 'Zebra coloring', 'Dynamic input labels', 'Prefer empty slot drops', 'Long form input dialog', 'Plain prototype labels', 'Clicking sound', 'Animations', 'Rasterize SVGs', 'Flat design', 'Nested auto-wrapping', 'Sprite Nesting', 'First-Class Sprites', 'Keyboard Editing', 'Table support', 'Table lines', 'Live coding support', 'JIT compiler support', 'Thread safe scripts', 'Flat line ends', 'Codification support', 'Inheritance support', 'Hyper blocks support', 'Single palette', 'Show categories', 'Show buttons', 'Persist linked sublist IDs', 'Enable command drops in all rings', 'HSL pen color model', 'Disable click-to-run', 'Disable dragging data'],
@@ -509,7 +578,7 @@ MicroWorld.prototype.init = function (ide) {
 
 
 MicroWorld.prototype.enter = function () {
-    if(this.isActive){
+    if (this.isActive) {
         return;
     }
     var ide = this.ide,
@@ -544,14 +613,24 @@ MicroWorld.prototype.enter = function () {
     this.updateLoadFunctions();
     this.updateFreshPaletteFunction();
 
+    this.updateMakeBlockFlow();
+
     this.addBeButtonFunction();
 
-    function addEditingBlocks(items, oldItems, block){
-        var editItems = ['0','delete block definition...', 'duplicate block definition...','edit...']
+    function addEditingBlocks(items, oldItems, block) {
+        var editItems = ['0', 'delete block definition...', 'duplicate block definition...', 'edit...']
             .map(label => myself.findMenuItem(oldItems, label))
             .filter(item => !!item);
-
-        if((block.definition && block.definition.codeHeader && block.definition.codeHeader === 'microworld') || myself.editableBlocks === 'all' || (Array.isArray(myself.editableBlocks) && myself.editableBlocks.indexOf(block.blockSpec) > -1)){
+        // decide if a block should be editable
+        if (
+            // all blocks created in the microworld are editable
+            (block?.definition?.codeHeader ==='microworld'
+                // but if we don't allow editing block types, only allow when block isn't a prototype
+                && (currentMicroworld().makeBlock.editBlockTypeInEditor || !block.isPrototype))
+            // check if all blocks are editable
+            || myself.editableBlocks === 'all'
+            // or if this block is explicitly listed in the editable list
+            || (Array.isArray(myself.editableBlocks) && myself.editableBlocks.indexOf(block.blockSpec) > -1)) {
             items = items.concat(editItems);
         }
 
@@ -582,9 +661,9 @@ MicroWorld.prototype.enter = function () {
     this.changeMenu(IDE_Morph.prototype, 'settingsMenu', 'settingsMenu', true);
     this.changeMenu(IDE_Morph.prototype, 'languageMenu', 'languageMenu', true, updateTranslateMenu);
     this.changeMenu(BlockMorph.prototype, 'userMenu', 'blockContextMenu', false);
-    this.changeMenu(ScriptsMorph.prototype, 'userMenu','scriptsContextMenu', false);
-    this.changeMenu(StageMorph.prototype, 'userMenu','stageContextMenu', false);
-    this.changeMenu(SpriteMorph.prototype, 'userMenu','spriteContextMenu', false);
+    this.changeMenu(ScriptsMorph.prototype, 'userMenu', 'scriptsContextMenu', false);
+    this.changeMenu(StageMorph.prototype, 'userMenu', 'stageContextMenu', false);
+    this.changeMenu(SpriteMorph.prototype, 'userMenu', 'spriteContextMenu', false);
 
     this.changeMenu(CustomCommandBlockMorph.prototype, 'userMenu', 'blockContextMenu', false, addEditingBlocks)
     this.changeMenu(CustomReporterBlockMorph.prototype, 'userMenu', 'blockContextMenu', false, addEditingBlocks)
@@ -598,14 +677,14 @@ MicroWorld.prototype.enter = function () {
 
 };
 
-MicroWorld.prototype.showLoadingScreen = function() {
+MicroWorld.prototype.showLoadingScreen = function () {
     // make sure there's only one loading screen
-    if(!this.getLoadingScreen()) {
+    if (!this.getLoadingScreen()) {
         let rect = new BoxMorph(),
-        world = this.ide.world();
+            world = this.ide.world();
         rect.setWidth(world.width());
         rect.setHeight(world.height());
-        rect.setColor(new Color(0,0,0));
+        rect.setColor(new Color(0, 0, 0));
         rect.microworldLoadingScreen = true;
         world.add(rect);
         this.ide.fixLayout();
@@ -613,23 +692,23 @@ MicroWorld.prototype.showLoadingScreen = function() {
     }
 }
 
-MicroWorld.prototype.getLoadingScreen = function() {
+MicroWorld.prototype.getLoadingScreen = function () {
     return this.ide.world().children.find(child => child.microworldLoadingScreen);
 }
 
-MicroWorld.prototype.hideLoadingScreen = function() {
+MicroWorld.prototype.hideLoadingScreen = function () {
     const screen = this.getLoadingScreen();
-    if(screen) {
+    if (screen) {
         screen.destroy();
         this.ide.showMessage()
     }
 }
 
-MicroWorld.prototype.changeLanguage = function(languageCode, message, payload, loadingScreen) {
+MicroWorld.prototype.changeLanguage = function (languageCode, message, payload, loadingScreen) {
     var ide = this.ide,
         flag = ide.isAppMode;
 
-    if(!message){
+    if (!message) {
         message = '';
     } else if (Array.isArray(message)) {
         message = message[0];
@@ -639,14 +718,14 @@ MicroWorld.prototype.changeLanguage = function(languageCode, message, payload, l
 
     let match = false;
 
-    for(let language in languages) {
-        if(languages[language] === languageCode) {
+    for (let language in languages) {
+        if (languages[language] === languageCode) {
             match = true;
         }
     }
 
-    if(!match) {
-        throw new Error("Cannot find language "+languageCode+".")
+    if (!match) {
+        throw new Error("Cannot find language " + languageCode + ".")
     }
 
     var restoreMode = () => {
@@ -662,9 +741,8 @@ MicroWorld.prototype.changeLanguage = function(languageCode, message, payload, l
     ide.loadNewProject = false;
 
 
-
     callback = () => {
-        if(loadingScreen) {
+        if (loadingScreen) {
             this.showLoadingScreen();
         }
         // for some reason this works better with a time delay
@@ -678,7 +756,7 @@ MicroWorld.prototype.changeLanguage = function(languageCode, message, payload, l
 }
 
 MicroWorld.prototype.escape = function () {
-    if(!this.isActive){
+    if (!this.isActive) {
         return;
     }
     var ide = this.ide,
@@ -710,26 +788,24 @@ MicroWorld.prototype.escape = function () {
     this.refreshLayouts();
 };
 
-MicroWorld.prototype.blocksToButtons = function(undo) {
+MicroWorld.prototype.blocksToButtons = function (undo) {
     var ide = this.ide,
         sprites;
 
-    if(this.hiddenMorphs.includes('spriteCorral')){
+    if (this.hiddenMorphs.includes('spriteCorral')) {
         sprites = [ide.currentSprite];
-    }
-    else{
+    } else {
         sprites = Array.from(ide.sprites.contents)
         sprites.push(ide.stage);
     }
 
     sprites.forEach(sprite => {
-        if(sprite.scripts && sprite.scripts.children){
+        if (sprite.scripts && sprite.scripts.children) {
             sprite.scripts.children.forEach(block => {
-                if(block instanceof CustomCommandBlockMorph){
-                    if(undo){
+                if (block instanceof CustomCommandBlockMorph) {
+                    if (undo) {
                         block.beButton(false);
-                    }
-                    else if(this.buttonBlocks.includes(block.blockSpec)){
+                    } else if (this.buttonBlocks.includes(block.blockSpec)) {
                         block.beButton();
                     }
                 }
@@ -738,22 +814,22 @@ MicroWorld.prototype.blocksToButtons = function(undo) {
     })
 }
 
-MicroWorld.prototype.updateLoadFunctions = function() {
+MicroWorld.prototype.updateLoadFunctions = function () {
 
-    if(!IDE_Morph.prototype.oldRawOpenProjectString) {
+    if (!IDE_Morph.prototype.oldRawOpenProjectString) {
         IDE_Morph.prototype.oldRawOpenProjectString = IDE_Morph.prototype.rawOpenProjectString;
-        IDE_Morph.prototype.rawOpenProjectString = function(str) {
-            if(currentMicroworld() && currentMicroworld().isActive){
+        IDE_Morph.prototype.rawOpenProjectString = function (str) {
+            if (currentMicroworld() && currentMicroworld().isActive) {
                 currentMicroworld().escape();
             }
             this.oldRawOpenProjectString(str);
         }
     }
 
-    if(!IDE_Morph.prototype.oldRawOpenCloudDataString) {
+    if (!IDE_Morph.prototype.oldRawOpenCloudDataString) {
         IDE_Morph.prototype.oldRawOpenCloudDataString = IDE_Morph.prototype.rawOpenCloudDataString;
-        IDE_Morph.prototype.rawOpenCloudDataString = function(str) {
-            if(currentMicroworld() && currentMicroworld().isActive){
+        IDE_Morph.prototype.rawOpenCloudDataString = function (str) {
+            if (currentMicroworld() && currentMicroworld().isActive) {
                 currentMicroworld().escape();
             }
             this.oldRawOpenCloudDataString(str);
@@ -764,26 +840,25 @@ MicroWorld.prototype.updateLoadFunctions = function() {
 }
 
 
-
-MicroWorld.prototype.updateSerializeFunction = function() {
+MicroWorld.prototype.updateSerializeFunction = function () {
 
 
     // disable this when refreshing the IDE to avoid lags on UI interactions
     function ignoreSerializeFor(owner, functionName) {
         var oldFunctionName = 'serializerOld' + functionName[0].toUpperCase() + functionName.slice(1);
 
-        if(!owner || !owner.prototype[functionName]) {
+        if (!owner || !owner.prototype[functionName]) {
             return;
         }
 
-        if(!owner.prototype.hasOwnProperty(oldFunctionName)){
+        if (!owner.prototype.hasOwnProperty(oldFunctionName)) {
             owner.prototype[oldFunctionName] = owner.prototype[functionName];
-            owner.prototype[functionName] = function (...args){
-                if(currentMicroworld()) {
+            owner.prototype[functionName] = function (...args) {
+                if (currentMicroworld()) {
                     currentMicroworld().ignoreSerializeOverride = true;
                 }
                 owner.prototype[oldFunctionName].apply(this, args)
-                if(currentMicroworld()) {
+                if (currentMicroworld()) {
                     currentMicroworld().ignoreSerializeOverride = false;
                 }
 
@@ -794,24 +869,20 @@ MicroWorld.prototype.updateSerializeFunction = function() {
     ignoreSerializeFor(SpriteMorph, "recordUserEdit");
 
 
-
-
-
-
     var ide = this.ide;
-    if(!XML_Serializer.prototype.oldSerialize){
+    if (!XML_Serializer.prototype.oldSerialize) {
         XML_Serializer.prototype.oldSerialize = XML_Serializer.prototype.serialize;
-        XML_Serializer.prototype.serialize = function(object, forBlocksLibrary){
+        XML_Serializer.prototype.serialize = function (object, forBlocksLibrary) {
             var reenter = false;
 
-            if(currentMicroworld() && currentMicroworld().isActive && !currentMicroworld().ignoreSerializeOverride){
+            if (currentMicroworld() && currentMicroworld().isActive && !currentMicroworld().ignoreSerializeOverride) {
                 currentMicroworld().escape();
                 reenter = true;
                 ide.scene.captureGlobalSettings();
                 object = new Project(ide.scenes, ide.scene)
             }
             var str = this.oldSerialize(object, forBlocksLibrary);
-            if(reenter){
+            if (reenter) {
                 currentMicroworld().enter();
                 ide.scene.captureGlobalSettings();
             }
@@ -820,20 +891,57 @@ MicroWorld.prototype.updateSerializeFunction = function() {
     }
 }
 
-MicroWorld.prototype.updateFreshPaletteFunction = function(){
+MicroWorld.prototype.updateFreshPaletteFunction = function () {
     var myself = this;
-    if(!SpriteMorph.prototype.oldFreshPalette){
+    if (!SpriteMorph.prototype.oldFreshPalette) {
         SpriteMorph.prototype.oldFreshPalette = SpriteMorph.prototype.freshPalette;
         StageMorph.prototype.oldFreshPalette = StageMorph.prototype.freshPalette;
     }
 
-    SpriteMorph.prototype.freshPalette = function (category){
+    SpriteMorph.prototype.freshPalette = function (category) {
         var palette = this.oldFreshPalette(category);
 
-        if(currentMicroworld() && currentMicroworld().isActive){
+        if (currentMicroworld() && currentMicroworld().isActive) {
             palette.allChildren()
                 .filter(morph => myself.hiddenPaletteActions.includes(morph.action)) // only get items to hide
-                .forEach(morph => {morph.destroy()});
+                .forEach(morph => {
+                    morph.destroy()
+                });
+
+            if(currentMicroworld().makeBlock.editButtonInPalette) {
+                 palette.allChildren()
+                .filter(child => child?.definition?.codeHeader === 'microworld')
+                .forEach(block => {
+                    var sprite = ide.currentSprite
+                    var button = new PushButtonMorph(
+                        sprite,
+                        () => {
+                            block.edit()
+                        },
+                        localize('edit...')
+                    );
+
+
+                    var x = block.bounds.corner.x + 5,
+                        y = block.bounds.origin.y - 2;
+
+                    button.setPosition(new Point(x, y))
+
+                    const transparent = new Color(0,0,0,0);
+
+                    button.setColor(transparent);
+                    button.labelColor = WHITE;
+                    button.outlineColor = transparent;
+                    button.labelShadowColor = transparent;
+                    button.highlightColor = button.color.lighter(15);
+
+                    button.fixLayout();
+                    palette.addContents(button);
+
+                });
+            }
+
+
 
             palette.contents.adjustBounds();
 
@@ -846,7 +954,7 @@ MicroWorld.prototype.updateFreshPaletteFunction = function(){
                 y += unit * 0.3;
                 button.setPosition(new Point(x, y));
                 palette.addContents(button);
-                y+= button.height();
+                y += button.height();
             })
 
         }
@@ -860,11 +968,186 @@ MicroWorld.prototype.updateFreshPaletteFunction = function(){
     StageMorph.prototype.freshPalette = SpriteMorph.prototype.freshPalette;
 }
 
-MicroWorld.prototype.updateGetInputFunction = function() {
-    if(!BlockDialogMorph.prototype.oldGetInput){
+
+
+
+MicroWorldBlockDialogMorph.prototype = new BlockDialogMorph();
+MicroWorldBlockDialogMorph.prototype.constructor = MicroWorldBlockDialogMorph;
+MicroWorldBlockDialogMorph.uber = BlockDialogMorph.prototype;
+
+function MicroWorldBlockDialogMorph(
+    target,
+    action,
+    environment,
+    showCategories,
+    defaultType,
+    showTypes,
+    isGlobal,
+    showScopes
+) {
+    this.init(
+        target,
+        action,
+        environment,
+        showCategories,
+        defaultType,
+        showTypes,
+        isGlobal,
+        showScopes
+    );
+}
+
+MicroWorldBlockDialogMorph.prototype.init = function(
+    target,
+    action,
+    environment,
+    showCategories,
+    defaultType,
+    showTypes,
+    isGlobal,
+    showScopes
+) {
+    this.showCategories = showCategories;
+    this.defaultType = defaultType;
+    this.showTypes = showTypes;
+    this.showScopes = showScopes;
+    MicroWorldBlockDialogMorph.uber.init.call(this, target, action, environment);
+    if(!showCategories) {
+        this.removeChild(this.categories);
+        this.categories.setHeight(-1 * this.padding);
+    }
+    if(!showTypes) {
+        this.removeChild(this.types);
+        this.types.setHeight(-1 * this.padding);
+    }
+    if(!showScopes) {
+        this.removeChild(this.scopes);
+        this.scopes.setHeight(-1 * this.padding);
+    }
+    this.fixLayout();
+    this.blockType = defaultType || this.blockType;
+    if(isGlobal === false) {
+        this.setScope('local');
+    }
+}
+
+MicroWorldBlockDialogMorph.prototype.createCategoryButtons = function() {
+    if(this.showCategories) {
+        MicroWorldBlockDialogMorph.uber.createCategoryButtons.call(this);
+    }
+}
+
+MicroWorldBlockDialogMorph.prototype.fixCategoriesLayout = function() {
+    if(this.showCategories) {
+        MicroWorldBlockDialogMorph.uber.fixCategoriesLayout.call(this);
+    }
+}
+
+MicroWorldBlockDialogMorph.prototype.createTypeButtons = function() {
+    if(this.showTypes) {
+        MicroWorldBlockDialogMorph.uber.createTypeButtons.call(this);
+    }
+}
+
+
+MicroWorld.prototype.updateMakeBlockFlow = function () {
+    if (!SpriteMorph.prototype.oldMakeBlock) {
+        SpriteMorph.prototype.oldMakeBlock = SpriteMorph.prototype.makeBlock;
+
+
+        SpriteMorph.prototype.makeBlock = function () {
+            if (!currentMicroworld() || !currentMicroworld().isActive) {
+                this.oldMakeBlock();
+            } else {
+                // prompt the user to make a new block
+                var ide = this.parentThatIsA(IDE_Morph),
+                    stage = this.parentThatIsA(StageMorph),
+                    category = currentMicroworld().makeBlock.defaultCategory ||
+                        (ide.currentCategory === 'unified' ?
+                            ide.topVisibleCategoryInPalette()
+                            : ide.currentCategory),
+                    clr = SpriteMorph.prototype.blockColorFor(category),
+                    dlg;
+                dlg = new MicroWorldBlockDialogMorph(
+                    null,
+                    definition => {
+                        const comment = currentMicroworld().makeBlock.editorCommentText;
+                        if(comment) {
+                            definition.comment = new CommentMorph(comment);
+                        }
+                        if (definition.spec !== '') {
+                            if (definition.isGlobal) {
+                                stage.globalBlocks.push(definition);
+                            } else {
+                                this.customBlocks.push(definition);
+                            }
+                            ide.flushPaletteCache();
+                            ide.categories.refreshEmpty();
+                            ide.refreshPalette();
+                            this.recordUserEdit(
+                                'palette',
+                                'custom block',
+                                definition.isGlobal ? 'global' : 'local',
+                                'new',
+                                definition.abstractBlockSpec()
+                            );
+                            new BlockEditorMorph(definition, this).popUp();
+                        }
+                    },
+                    this,
+                    currentMicroworld().makeBlock.showCategories,
+                    currentMicroworld().makeBlock.defaultType,
+                    currentMicroworld().makeBlock.showTypes,
+                    currentMicroworld().makeBlock.isGlobal,
+                    currentMicroworld().makeBlock.showScopes
+                );
+                if (category !== 'variables' || category !== 'unified') {
+                    dlg.category = category;
+                    dlg.categories.refresh();
+                    dlg.types.children.forEach(each => {
+                        each.setColor(clr);
+                        each.refresh();
+                    });
+                }
+                dlg.prompt(
+                    currentMicroworld().makeBlock.nameBlockTitle,
+                    null,
+                    this.world()
+                );
+            }
+        }
+    }
+
+     if (!BlockEditorMorph.prototype.oldPopUp) {
+         BlockEditorMorph.prototype.oldPopUp = BlockEditorMorph.prototype.popUp;
+
+         BlockEditorMorph.prototype.popUp = function () {
+             BlockEditorMorph.prototype.oldPopUp.call(this);
+             if (currentMicroworld() && currentMicroworld().isActive) {
+                 if (!currentMicroworld().makeBlock.applyButtonInEditor) {
+                     const apply = this.buttons.children.find(e => e.action === "updateDefinition");
+                     this.buttons.removeChild(apply);
+                     this.buttons.fixLayout();
+                     this.fixLayout();
+                 }
+
+                 if (!currentMicroworld().makeBlock.editBlockTypeInEditor) {
+                     const hat = this.body.contents.children.find(child => child instanceof PrototypeHatBlockMorph);
+                     if (hat) {
+                         hat.mouseClickLeft = () => {
+                         };
+                     }
+                 }
+             }
+         }
+     }
+}
+
+MicroWorld.prototype.updateGetInputFunction = function () {
+    if (!BlockDialogMorph.prototype.oldGetInput) {
         BlockDialogMorph.prototype.oldGetInput = BlockDialogMorph.prototype.getInput;
-        BlockDialogMorph.prototype.getInput = function() {
-            if(!currentMicroworld() || !currentMicroworld().isActive){
+        BlockDialogMorph.prototype.getInput = function () {
+            if (!currentMicroworld() || !currentMicroworld().isActive) {
                 return this.oldGetInput();
             }
             var def = this.oldGetInput();
@@ -884,7 +1167,9 @@ MicroWorld.prototype.doDefineBlock = function (upvar, label, context, proc) {
 
     proc.assertType(label, 'text');
     label = label.trim();
-    if (label === '') {return ''; }
+    if (label === '') {
+        return '';
+    }
     proc.assertType(context, ['command', 'reporter', 'predicate']);
 
     // replace upvar self references inside the definition body
@@ -894,10 +1179,9 @@ MicroWorld.prototype.doDefineBlock = function (upvar, label, context, proc) {
     }
 
     // identify global custom block matching the specified label
-    matches = ide.stage.globalBlocks.filter(def =>{
-        return def.blockSpec() === label
-    }
-
+    matches = ide.stage.globalBlocks.filter(def => {
+            return def.blockSpec() === label
+        }
     );
     if (matches.length > 1) {
         throw new Error(
@@ -905,10 +1189,10 @@ MicroWorld.prototype.doDefineBlock = function (upvar, label, context, proc) {
         );
     } else if (matches.length === 1) {
         // update the existing global definition with the context body
-        
+
         def = matches[0];
 
-        if(this.editableBlocks !== 'all' && !this.editableBlocks.includes(label) && def.codeHeader !== 'microworld') {
+        if (this.editableBlocks !== 'all' && !this.editableBlocks.includes(label) && def.codeHeader !== 'microworld') {
             throw new Error('You are not allowed to edit this block.\nTry changing the name.')
         }
 
@@ -962,12 +1246,12 @@ MicroWorld.prototype.doDefineBlock = function (upvar, label, context, proc) {
     proc.setVarNamed(upvar, def.blockInstance().reify())
 };
 
-MicroWorld.prototype.updateKeyFireFunction = function(){
-    if(!StageMorph.prototype.oldFireKeyEvent) {
+MicroWorld.prototype.updateKeyFireFunction = function () {
+    if (!StageMorph.prototype.oldFireKeyEvent) {
         StageMorph.prototype.oldFireKeyEvent = StageMorph.prototype.fireKeyEvent;
 
-        StageMorph.prototype.fireKeyEvent = function(key){
-            if(currentMicroworld() && currentMicroworld().isActive && currentMicroworld().suppressedKeyEvents.indexOf(key) > -1){
+        StageMorph.prototype.fireKeyEvent = function (key) {
+            if (currentMicroworld() && currentMicroworld().isActive && currentMicroworld().suppressedKeyEvents.indexOf(key) > -1) {
                 return;
             }
             return this.oldFireKeyEvent(key);
@@ -976,8 +1260,8 @@ MicroWorld.prototype.updateKeyFireFunction = function(){
     }
 }
 
-MicroWorld.prototype.addBeButtonFunction = function (){
-    if(!CustomCommandBlockMorph.prototype.beButton) {
+MicroWorld.prototype.addBeButtonFunction = function () {
+    if (!CustomCommandBlockMorph.prototype.beButton) {
         CustomCommandBlockMorph.prototype.beButton = function (button = true) {
             if (button) {
                 this.buttonBackup = {
@@ -1010,15 +1294,15 @@ MicroWorld.prototype.addBeButtonFunction = function (){
         };
     }
 
-    if(!BlockMorph.prototype.oldFixLayout) {
+    if (!BlockMorph.prototype.oldFixLayout) {
         BlockMorph.prototype.oldFixLayout = BlockMorph.prototype.fixLayout;
 
-        BlockMorph.prototype.fixLayout = function() {
+        BlockMorph.prototype.fixLayout = function () {
 
 
-            if(currentMicroworld() && currentMicroworld().isActive && currentMicroworld().buttonBlocks.includes(this.blockSpec)){
-                        this.beButton();
-                    }
+            if (currentMicroworld() && currentMicroworld().isActive && currentMicroworld().buttonBlocks.includes(this.blockSpec)) {
+                this.beButton();
+            }
 
             this.oldFixLayout();
 
@@ -1035,22 +1319,22 @@ MicroWorld.prototype.addBeButtonFunction = function (){
  * @param changeAfterOpen true if we want to modify the menu after it's created in the world; false if we want to modify the menu and return it
  * @param extraFunction Additional transformation to apply on the menu after it has been populated by the specified selectors
  */
-MicroWorld.prototype.changeMenu = function(owner, functionName, menuSelector, changeAfterOpen, extraFunction) {
+MicroWorld.prototype.changeMenu = function (owner, functionName, menuSelector, changeAfterOpen, extraFunction) {
     var oldFunctionName = 'mwOld' + functionName[0].toUpperCase() + functionName.slice(1);
 
-    if(!owner || !owner[functionName]) {
+    if (!owner || !owner[functionName]) {
         return;
     }
 
-    if(!owner.hasOwnProperty(oldFunctionName)){
+    if (!owner.hasOwnProperty(oldFunctionName)) {
         owner[oldFunctionName] = owner[functionName];
-        owner[functionName] = function (){
+        owner[functionName] = function () {
             var returnMenu = owner[oldFunctionName].apply(this),
                 menu = returnMenu;
 
-            if(currentMicroworld() && currentMicroworld().isActive){
+            if (currentMicroworld() && currentMicroworld().isActive) {
 
-                if(changeAfterOpen){
+                if (changeAfterOpen) {
                     menu = currentMicroworld().ide.currentSprite.world().activeMenu || null
                 }
 
@@ -1060,8 +1344,8 @@ MicroWorld.prototype.changeMenu = function(owner, functionName, menuSelector, ch
                 currentMicroworld().transformMenu(menu, originalItems, extraFunction, this);
                 currentMicroworld().cleanMenu(menu);
 
-                if(changeAfterOpen) {
-                    if(menu){
+                if (changeAfterOpen) {
+                    if (menu) {
                         menu.createItems();
                     }
                 }
@@ -1077,7 +1361,7 @@ MicroWorld.prototype.createPalette = function () {
 
     // backup old settings
     this.oldCategory = ide.currentCategory;
-    this.oldHiddenPrimitives = Object.assign({},StageMorph.prototype.hiddenPrimitives);
+    this.oldHiddenPrimitives = Object.assign({}, StageMorph.prototype.hiddenPrimitives);
 
     ide.setUnifiedPalette(true);
 
@@ -1085,22 +1369,22 @@ MicroWorld.prototype.createPalette = function () {
 }
 
 
-MicroWorld.prototype.updateCustomBlockTemplateFunction = function(){
-    if(!SpriteMorph.prototype.oldCustomBlockTemplatesForCategory) {
+MicroWorld.prototype.updateCustomBlockTemplateFunction = function () {
+    if (!SpriteMorph.prototype.oldCustomBlockTemplatesForCategory) {
         SpriteMorph.prototype.oldCustomBlockTemplatesForCategory = SpriteMorph.prototype.customBlockTemplatesForCategory;
         StageMorph.prototype.oldCustomBlockTemplatesForCategory = SpriteMorph.prototype.oldCustomBlockTemplatesForCategory;
 
-        SpriteMorph.prototype.customBlockTemplatesForCategory = function(category) {
+        SpriteMorph.prototype.customBlockTemplatesForCategory = function (category) {
 
-            if(!currentMicroworld() || !currentMicroworld().isActive){
+            if (!currentMicroworld() || !currentMicroworld().isActive) {
                 return this.oldCustomBlockTemplatesForCategory(category);
             }
             var blocks = this.oldCustomBlockTemplatesForCategory(category)
                 .filter(block => {
-                    if(block === "="){
+                    if (block === "=") {
                         return false;
                     }
-                    if(block.definition && block.definition.codeHeader && block.definition.codeHeader === 'microworld'){
+                    if (block.definition && block.definition.codeHeader && block.definition.codeHeader === 'microworld') {
                         return true;
                     }
 
@@ -1113,13 +1397,13 @@ MicroWorld.prototype.updateCustomBlockTemplateFunction = function(){
     }
 }
 
-MicroWorld.prototype.updateBlockTemplatesFunction = function() {
-    function filterVariables(category){
+MicroWorld.prototype.updateBlockTemplatesFunction = function () {
+    function filterVariables(category) {
         var blocks = this.oldBlockTemplates(category);
 
-        if(currentMicroworld() && currentMicroworld().isActive && category === 'variables' && !currentMicroworld().enableVariables){
+        if (currentMicroworld() && currentMicroworld().isActive && category === 'variables' && !currentMicroworld().enableVariables) {
             blocks = blocks.filter(block => {
-                if(block instanceof PushButtonMorph || (block && block.selector && block.selector === 'reportGetVar')){
+                if (block instanceof PushButtonMorph || (block && block.selector && block.selector === 'reportGetVar')) {
                     return false;
                 }
                 return true;
@@ -1129,7 +1413,7 @@ MicroWorld.prototype.updateBlockTemplatesFunction = function() {
         return blocks;
     }
 
-    if(!SpriteMorph.prototype.oldBlockTemplates){
+    if (!SpriteMorph.prototype.oldBlockTemplates) {
         SpriteMorph.prototype.oldBlockTemplates = SpriteMorph.prototype.blockTemplates;
         StageMorph.prototype.oldBlockTemplates = StageMorph.prototype.blockTemplates;
         SpriteMorph.prototype.blockTemplates = filterVariables;
@@ -1137,32 +1421,32 @@ MicroWorld.prototype.updateBlockTemplatesFunction = function() {
     }
 }
 
-MicroWorld.prototype.loadSpecs = function (){
+MicroWorld.prototype.loadSpecs = function () {
     var ide = this.ide;
     this.updateCustomBlockTemplateFunction();
     this.updateBlockTemplatesFunction();
     this.showOnlyRelevantPrimitives();
 
-    if(this.isActive){
+    if (this.isActive) {
         this.refreshLayouts();
     }
 
 }
 
-MicroWorld.prototype.showOnlyRelevantPrimitives = function(){
+MicroWorld.prototype.showOnlyRelevantPrimitives = function () {
     // hide primitives
     var defs = SpriteMorph.prototype.blocks;
 
     StageMorph.prototype.hiddenPrimitives = {};
 
     Object.keys(defs).forEach(sel => {
-        if(this.blockSpecs.indexOf(sel) === -1){
+        if (this.blockSpecs.indexOf(sel) === -1) {
             StageMorph.prototype.hiddenPrimitives[sel] = true;
         }
     });
 }
 
-MicroWorld.prototype.restorePalette = function() {
+MicroWorld.prototype.restorePalette = function () {
     var myself = this,
         ide = this.ide;
 
@@ -1184,10 +1468,10 @@ MicroWorld.prototype.restorePalette = function() {
     this.refreshLayouts();
 }
 
-MicroWorld.prototype.refreshLayouts = function() {
+MicroWorld.prototype.refreshLayouts = function () {
     var ide = this.ide;
 
-    if(!this.isLoading){
+    if (!this.isLoading) {
 
         ide.flushBlocksCache('unified');
         ide.refreshPalette(true);
@@ -1229,14 +1513,15 @@ MicroWorld.prototype.makeButtons = function () {
     sf.toolBar.fixLayout();
 
 
-    if (!ide.corralButtonsFrame) { this.createCorralButtonsFrame(); }
+    if (!ide.corralButtonsFrame) {
+        this.createCorralButtonsFrame();
+    }
 
     if (this.buttonAreas['corral'].buttons.length > 0) {
         this.buttonAreas['corral'].buttons.forEach(
             function (definition) {
                 var button = myself.makeButton(definition, 'corral');
-                if (!contains(ide.corralButtonsFrame.contents.children, button))
-                {
+                if (!contains(ide.corralButtonsFrame.contents.children, button)) {
                     ide.corralButtonsFrame.addContents(button);
                     sprite.buttons[definition.label] = button;
                 }
@@ -1244,16 +1529,16 @@ MicroWorld.prototype.makeButtons = function () {
         );
     }
 
-    if(this.buttonAreas['stage'].buttons.length > 0 ) {
+    if (this.buttonAreas['stage'].buttons.length > 0) {
         this.buttonAreas['stage'].buttons.forEach(
-            function({definition, appearance}) {
+            function ({definition, appearance}) {
                 var button = myself.makeButton(definition, 'stage');
 
                 var oldFix = PushButtonMorph.prototype.fixLayout;
 
                 const oldButton = stage.children.find(item => item.labelString === definition.label);
 
-                if(oldButton) {
+                if (oldButton) {
                     oldButton.destroy();
                 }
 
@@ -1264,14 +1549,14 @@ MicroWorld.prototype.makeButtons = function () {
                 const originalFontSize = button.fontSize;
                 const originalPadding = button.padding;
 
-                button.fixLayout = function() {
+                button.fixLayout = function () {
 
                     const x = stage.center().x + (appearance.x * stage.scale),
                         y = stage.center().y - (appearance.y * stage.scale);
 
                     let offsetTop = 0, offsetLeft = 0;
 
-                    switch(appearance.anchorX) {
+                    switch (appearance.anchorX) {
                         case 'right':
                             offsetLeft = button.width() * -1 * stage.scale;
                             break;
@@ -1280,7 +1565,7 @@ MicroWorld.prototype.makeButtons = function () {
                             break;
                     }
 
-                    switch(appearance.anchorY) {
+                    switch (appearance.anchorY) {
                         case 'bottom':
                             offsetTop = button.height() * -1 * stage.scale;
                             break;
@@ -1309,14 +1594,14 @@ MicroWorld.prototype.makeButtons = function () {
 
 }
 
-MicroWorld.prototype.destroyButtons = function(){
+MicroWorld.prototype.destroyButtons = function () {
 
     var ide = this.ide,
         sprite = ide.currentSprite,
         stage = ide.stage,
         sf = sprite.scripts.parentThatIsA(ScrollFrameMorph);
 
-    if(this.isActive){
+    if (this.isActive) {
         if (ide.corralButtonsFrame) {
             ide.corralButtonsFrame.destroy();
             ide.corralButtonsFrame = null;
@@ -1329,15 +1614,15 @@ MicroWorld.prototype.destroyButtons = function(){
                         return child.labelString == definition.label;
                     });
 
-                if(button){
+                if (button) {
                     sf.toolBar.removeChild(button);
                     delete sprite.buttons[definition.label];
                 }
             });
 
-        this.buttonAreas['stage'].buttons.forEach(({definition})=> {
+        this.buttonAreas['stage'].buttons.forEach(({definition}) => {
             const button = stage.children.find(child => child.labelString === definition.label);
-            if(button) {
+            if (button) {
                 stage.removeChild(button);
             }
         })
@@ -1381,9 +1666,9 @@ MicroWorld.prototype.makeButton = function (definition, area) {
         label
     );
 
-    if(this.buttonAreas[area]?.active.includes(definition.label)) {
+    if (this.buttonAreas[area]?.active.includes(definition.label)) {
         button.color = button.pressColor;
-        button.labelShadowColor = new Color(200,200,200);
+        button.labelShadowColor = new Color(200, 200, 200);
         button.highlightColor = button.color.lighter(25);
         button.fixLayout();
     }
@@ -1391,14 +1676,14 @@ MicroWorld.prototype.makeButton = function (definition, area) {
     return button;
 };
 
-MicroWorld.prototype.findMenuItem = function(items, itemLabel){
-    if(itemLabel === 'duplicate single block'){
+MicroWorld.prototype.findMenuItem = function (items, itemLabel) {
+    if (itemLabel === 'duplicate single block') {
         itemLabel = '[object HTMLCanvasElement]';
     }
     var item = items.find(
         function (each) {
             var label = each[0];
-            if(Array.isArray(label)){
+            if (Array.isArray(label)) {
                 label = label.find(entry => typeof entry === "string")
             }
             return label.toString() ===
@@ -1430,35 +1715,34 @@ MicroWorld.prototype.setupMenu = function (menuSelector, menu) {
     return menu;
 };
 
-MicroWorld.prototype.transformMenu = function (menu, originalItems, extraFunction, caller){
+MicroWorld.prototype.transformMenu = function (menu, originalItems, extraFunction, caller) {
 
-    if(typeof extraFunction === 'function'){
+    if (typeof extraFunction === 'function') {
         menu.items = extraFunction(menu.items, originalItems, caller);
     }
     return menu;
 }
 
-MicroWorld.prototype.cleanMenu = function(menu){
+MicroWorld.prototype.cleanMenu = function (menu) {
     // remove multiple dividers in a row
     var lastWasDivider = false,
         items = menu.items.filter(item => {
-            if(item[0] === 0){
-                if(lastWasDivider){
+            if (item[0] === 0) {
+                if (lastWasDivider) {
                     return false;
                 }
                 lastWasDivider = true;
-            }
-            else{
+            } else {
                 lastWasDivider = false;
             }
             return true;
         });
 
-    if(items.length > 0){
-        if(items[items.length - 1][0] === 0){
+    if (items.length > 0) {
+        if (items[items.length - 1][0] === 0) {
             items.pop();
         }
-        if(items[0] && items[0][0] === 0){
+        if (items[0] && items[0][0] === 0) {
             items.shift();
         }
     }
@@ -1532,7 +1816,9 @@ MicroWorld.prototype.hideCategoryList = function () {
         }
         this.setCenter(ide.palette.center());
         this.setRight(ide.palette.right());
-        if (ide) { ide.add(this); } // come to front
+        if (ide) {
+            ide.add(this);
+        } // come to front
     };
 };
 
@@ -1590,11 +1876,11 @@ MicroWorld.prototype.hideSpriteBar = function () {
     ide.spriteBar.hide();
     ide.spriteBar.tabBar.hide();
 
-    if(!IDE_Morph.prototype.oldFixLayout){
+    if (!IDE_Morph.prototype.oldFixLayout) {
         IDE_Morph.prototype.oldFixLayout = IDE_Morph.prototype.fixLayout;
     }
 
-    IDE_Morph.prototype.fixLayout = function (situation){
+    IDE_Morph.prototype.fixLayout = function (situation) {
         this.oldFixLayout(situation);
 
         // spriteEditor (copied from inherited method; doesn't run in 'refreshPalette' situation)
@@ -1629,7 +1915,7 @@ MicroWorld.prototype.showSpriteBar = function () {
     this.ide.spriteBar.show();
     this.ide.spriteBar.tabBar.show();
 
-    if(IDE_Morph.prototype.oldFixLayout){
+    if (IDE_Morph.prototype.oldFixLayout) {
         IDE_Morph.prototype.fixLayout = IDE_Morph.prototype.oldFixLayout;
     }
 
@@ -1659,23 +1945,23 @@ MicroWorld.prototype.showSpriteCorral = function () {
     this.ide.corralBar.show();
 };
 
-MicroWorld.prototype.suppressKeyEvent = function(key){
+MicroWorld.prototype.suppressKeyEvent = function (key) {
     this.suppressedKeyEvents.push(key);
 }
 
-MicroWorld.prototype.allowKeyEvent = function(key){
+MicroWorld.prototype.allowKeyEvent = function (key) {
     this.suppressedKeyEvents = this.suppressedKeyEvents.filter(item => item !== key);
 }
 
-MicroWorld.prototype.hidePaletteButton = function(action) {
+MicroWorld.prototype.hidePaletteButton = function (action) {
     this.hiddenPaletteActions.push(action);
 }
 
-MicroWorld.prototype.showPaletteButton = function(action) {
+MicroWorld.prototype.showPaletteButton = function (action) {
     this.hiddenPaletteActions = this.hiddenPaletteActions.filter(item => item !== action);
 }
 
-MicroWorld.getLanguageList = function() {
+MicroWorld.getLanguageList = function () {
     const codes = SnapTranslator.languages();
     const languages = {};
 
