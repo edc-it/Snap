@@ -261,7 +261,7 @@ SnapExtensions.primitives.set(
 
 
 SnapExtensions.primitives.set(
-    prefix + 'set_make_block(nameBlockTitle,defaultCategory,showCategories,defaultType,showTypes,isGlobal,showScopes,editorCommentText,editButtonInPalette,applyButtonInEditor,editBlockTypeInEditor)',
+    prefix + 'set_make_block(nameBlockTitle,defaultCategory,showCategories,defaultType,showTypes,isGlobal,showScopes,editorCommentText,editButtonInPalette,applyButtonInEditor,editBlockTypeInEditor,warnOnEmptyScript)',
     (nameBlockTitle,
      defaultCategory,
      showCategories,
@@ -272,7 +272,8 @@ SnapExtensions.primitives.set(
      editorCommentText,
      editButtonInPalette,
      applyButtonInEditor,
-     editBlockTypeInEditor) => {
+     editBlockTypeInEditor,
+     warnOnEmptyScript) => {
         doIfMicroworld(microworld => {
             microworld.setMakeBlock(nameBlockTitle,
                 defaultCategory,
@@ -284,7 +285,8 @@ SnapExtensions.primitives.set(
                 editorCommentText,
                 editButtonInPalette,
                 applyButtonInEditor,
-                editBlockTypeInEditor);
+                editBlockTypeInEditor,
+                warnOnEmptyScript);
         })
     }
 )
@@ -485,7 +487,8 @@ MicroWorld.prototype.makeBlock = {
         editorCommentText: null,
         editButtonInPalette: false,
         applyButtonInEditor: true,
-        editBlockTypeInEditor: true
+        editBlockTypeInEditor: true,
+        warnOnEmptyScript: null
     }
 
 MicroWorld.prototype.setMakeBlock = function(
@@ -499,7 +502,8 @@ MicroWorld.prototype.setMakeBlock = function(
     editorCommentText = MicroWorld.prototype.makeBlock.editorCommentText,
     editButtonInPalette = MicroWorld.prototype.makeBlock.editButtonInPalette,
     applyButtonInEditor = MicroWorld.prototype.makeBlock.applyButtonInEditor,
-    editBlockTypeInEditor = MicroWorld.prototype.makeBlock.editBlockTypeInEditor
+    editBlockTypeInEditor = MicroWorld.prototype.makeBlock.editBlockTypeInEditor,
+    warnOnEmptyScript = MicroWorld.prototype.makeBlock.warnOnEmptyScript,
 
 ) {
     this.makeBlock = {
@@ -513,7 +517,8 @@ MicroWorld.prototype.setMakeBlock = function(
         editorCommentText,
         editButtonInPalette,
         applyButtonInEditor,
-        editBlockTypeInEditor
+        editBlockTypeInEditor,
+        warnOnEmptyScript
     }
 
     this.refreshLayouts();
@@ -1124,6 +1129,22 @@ MicroWorld.prototype.updateMakeBlockFlow = function () {
          BlockEditorMorph.prototype.popUp = function () {
              BlockEditorMorph.prototype.oldPopUp.call(this);
              if (currentMicroworld() && currentMicroworld().isActive) {
+
+                  const hat = this.body.contents.children.find(child => child instanceof PrototypeHatBlockMorph);
+
+                 if(!this.oldAccept) {
+                     this.oldAccept = this.accept;
+                     const warnOnEmptyScript = currentMicroworld().makeBlock.warnOnEmptyScript;
+                     this.accept = function() {
+                         if(warnOnEmptyScript && hat.children.length < 2) {
+                             ide.inform('', warnOnEmptyScript)
+                         }
+                         else {
+                             this.oldAccept.call(this)
+                         }
+                     }
+                 }
+
                  if (!currentMicroworld().makeBlock.applyButtonInEditor) {
                      const apply = this.buttons.children.find(e => e.action === "updateDefinition");
                      this.buttons.removeChild(apply);
@@ -1132,7 +1153,6 @@ MicroWorld.prototype.updateMakeBlockFlow = function () {
                  }
 
                  if (!currentMicroworld().makeBlock.editBlockTypeInEditor) {
-                     const hat = this.body.contents.children.find(child => child instanceof PrototypeHatBlockMorph);
                      if (hat) {
                          hat.mouseClickLeft = () => {
                          };
