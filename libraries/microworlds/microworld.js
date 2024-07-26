@@ -1,4 +1,4 @@
-// Update 2024-06-28
+// Update 2024-07-26
 var ide = world.children.find(child => {
         return child instanceof IDE_Morph;
     }),
@@ -261,7 +261,7 @@ SnapExtensions.primitives.set(
 
 
 SnapExtensions.primitives.set(
-    prefix + 'set_make_block(nameBlockTitle,defaultCategory,showCategories,defaultType,showTypes,isGlobal,showScopes,editorCommentText,editButtonInPalette,applyButtonInEditor,editBlockTypeInEditor,warnOnEmptyScript)',
+    prefix + 'set_make_block(nameBlockTitle,defaultCategory,showCategories,defaultType,showTypes,isGlobal,showScopes,editorCommentText,paletteEditButton,paletteDeleteButton,applyButtonInEditor,editBlockTypeInEditor,warnOnEmptyScript)',
     (nameBlockTitle,
      defaultCategory,
      showCategories,
@@ -270,7 +270,8 @@ SnapExtensions.primitives.set(
      isGlobal,
      showScopes,
      editorCommentText,
-     editButtonInPalette,
+     paletteEditButton,
+     paletteDeleteButton,
      applyButtonInEditor,
      editBlockTypeInEditor,
      warnOnEmptyScript) => {
@@ -283,7 +284,8 @@ SnapExtensions.primitives.set(
                 isGlobal,
                 showScopes,
                 editorCommentText,
-                editButtonInPalette,
+                paletteEditButton,
+                paletteDeleteButton,
                 applyButtonInEditor,
                 editBlockTypeInEditor,
                 warnOnEmptyScript);
@@ -485,7 +487,8 @@ MicroWorld.prototype.makeBlock = {
         isGlobal: true,
         showScopes: true,
         editorCommentText: null,
-        editButtonInPalette: false,
+        paletteEditButton: false,
+        paletteDeleteButton: false,
         applyButtonInEditor: true,
         editBlockTypeInEditor: true,
         warnOnEmptyScript: null
@@ -500,7 +503,8 @@ MicroWorld.prototype.setMakeBlock = function(
     isGlobal = MicroWorld.prototype.makeBlock.isGlobal,
     showScopes = MicroWorld.prototype.makeBlock.showScopes,
     editorCommentText = MicroWorld.prototype.makeBlock.editorCommentText,
-    editButtonInPalette = MicroWorld.prototype.makeBlock.editButtonInPalette,
+    paletteEditButton = MicroWorld.prototype.makeBlock.paletteEditButton,
+    paletteDeleteButton = MicroWorld.prototype.makeBlock.paletteDeleteButton,
     applyButtonInEditor = MicroWorld.prototype.makeBlock.applyButtonInEditor,
     editBlockTypeInEditor = MicroWorld.prototype.makeBlock.editBlockTypeInEditor,
     warnOnEmptyScript = MicroWorld.prototype.makeBlock.warnOnEmptyScript,
@@ -515,7 +519,8 @@ MicroWorld.prototype.setMakeBlock = function(
         isGlobal,
         showScopes,
         editorCommentText,
-        editButtonInPalette,
+        paletteEditButton,
+        paletteDeleteButton,
         applyButtonInEditor,
         editBlockTypeInEditor,
         warnOnEmptyScript
@@ -913,40 +918,67 @@ MicroWorld.prototype.updateFreshPaletteFunction = function () {
                     morph.destroy()
                 });
 
-            if(currentMicroworld().makeBlock.editButtonInPalette) {
+
                  palette.allChildren()
                 .filter(child => child?.definition?.codeHeader === 'microworld')
                 .forEach(block => {
-                    var sprite = ide.currentSprite
-                    var button = new PushButtonMorph(
-                        sprite,
-                        () => {
-                            block.edit()
-                        },
-                        localize('edit...')
-                    );
-
-
                     var x = block.bounds.corner.x + 5,
                         y = block.bounds.origin.y - 2;
 
-                    button.setPosition(new Point(x, y))
+                    var sprite = ide.currentSprite
 
-                    const transparent = new Color(0,0,0,0);
+                    if (currentMicroworld().makeBlock.paletteEditButton) {
+                        var editButton = new PushButtonMorph(
+                            sprite,
+                            () => {
+                                block.edit()
+                            },
+                            currentMicroworld().makeBlock.paletteEditButton
+                        );
 
-                    button.setColor(transparent);
-                    button.labelColor = WHITE;
-                    button.outlineColor = transparent;
-                    button.labelShadowColor = transparent;
-                    button.highlightColor = button.color.lighter(15);
 
-                    button.fixLayout();
-                    palette.addContents(button);
+                        editButton.setPosition(new Point(x, y))
+
+                        const transparent = new Color(0, 0, 0, 0);
+
+                        editButton.setColor(transparent);
+                        editButton.labelColor = WHITE;
+                        editButton.outlineColor = transparent;
+                        editButton.labelShadowColor = transparent;
+                        editButton.highlightColor = editButton.color.lighter(15);
+
+                        editButton.fixLayout();
+                        palette.addContents(editButton);
+
+                        x += editButton.width() + 5;
+                    }
+
+                    if (currentMicroworld().makeBlock.paletteDeleteButton) {
+                        var deleteButton = new PushButtonMorph(
+                            sprite,
+                            () => {
+                                block.deleteBlockDefinition()
+                            },
+                            currentMicroworld().makeBlock.paletteDeleteButton
+                        );
+
+                        deleteButton.setPosition(new Point(x, y))
+
+                        const transparent = new Color(0, 0, 0, 0);
+
+                        deleteButton.setColor(transparent);
+                        deleteButton.labelColor = WHITE;
+                        deleteButton.outlineColor = transparent;
+                        deleteButton.labelShadowColor = transparent;
+                        deleteButton.highlightColor = deleteButton.color.lighter(15);
+
+                        deleteButton.fixLayout();
+                        palette.addContents(deleteButton);
+
+                        x += deleteButton.width() + 5;
+                    }
 
                 });
-            }
-
-
 
             palette.contents.adjustBounds();
 
