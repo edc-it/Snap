@@ -261,7 +261,7 @@ SnapExtensions.primitives.set(
 
 
 SnapExtensions.primitives.set(
-    prefix + 'set_make_block(nameBlockTitle,defaultCategory,showCategories,defaultType,showTypes,isGlobal,showScopes,editorCommentText,paletteEditButton,paletteDeleteButton,applyButtonInEditor,editBlockTypeInEditor,warnOnEmptyScript)',
+    prefix + 'set_make_block(nameBlockTitle,defaultCategory,showCategories,defaultType,showTypes,isGlobal,showScopes,editorCommentText,paletteEditButton,paletteDeleteButton,deleteConfirmation,applyButtonInEditor,editBlockTypeInEditor,warnOnEmptyScript)',
     (nameBlockTitle,
      defaultCategory,
      showCategories,
@@ -272,6 +272,7 @@ SnapExtensions.primitives.set(
      editorCommentText,
      paletteEditButton,
      paletteDeleteButton,
+     deleteConfirmation,
      applyButtonInEditor,
      editBlockTypeInEditor,
      warnOnEmptyScript) => {
@@ -286,6 +287,7 @@ SnapExtensions.primitives.set(
                 editorCommentText,
                 paletteEditButton,
                 paletteDeleteButton,
+                deleteConfirmation,
                 applyButtonInEditor,
                 editBlockTypeInEditor,
                 warnOnEmptyScript);
@@ -489,6 +491,7 @@ MicroWorld.prototype.makeBlock = {
         editorCommentText: null,
         paletteEditButton: false,
         paletteDeleteButton: false,
+        deleteConfirmation: null,
         applyButtonInEditor: true,
         editBlockTypeInEditor: true,
         warnOnEmptyScript: null
@@ -505,6 +508,7 @@ MicroWorld.prototype.setMakeBlock = function(
     editorCommentText = MicroWorld.prototype.makeBlock.editorCommentText,
     paletteEditButton = MicroWorld.prototype.makeBlock.paletteEditButton,
     paletteDeleteButton = MicroWorld.prototype.makeBlock.paletteDeleteButton,
+    deleteConfirmation = MicroWorld.prototype.makeBlock.deleteConfirmation,
     applyButtonInEditor = MicroWorld.prototype.makeBlock.applyButtonInEditor,
     editBlockTypeInEditor = MicroWorld.prototype.makeBlock.editBlockTypeInEditor,
     warnOnEmptyScript = MicroWorld.prototype.makeBlock.warnOnEmptyScript,
@@ -521,6 +525,7 @@ MicroWorld.prototype.setMakeBlock = function(
         editorCommentText,
         paletteEditButton,
         paletteDeleteButton,
+        deleteConfirmation,
         applyButtonInEditor,
         editBlockTypeInEditor,
         warnOnEmptyScript
@@ -926,6 +931,22 @@ MicroWorld.prototype.updateFreshPaletteFunction = function () {
                         y = block.bounds.origin.y - 2;
 
                     var sprite = ide.currentSprite
+
+                    if (!block.oldDeleteBlockDefinition) {
+                        block.oldDeleteBlockDefinition = block.deleteBlockDefinition;
+
+                        block.deleteBlockDefinition = function () {
+                            if (currentMicroworld()?.makeBlock?.deleteConfirmation) {
+                                const key = 'block deletion dialog text'
+                                const oldMessage = localize(key);
+                                SnapTranslator.dict[SnapTranslator.language][key] = currentMicroworld().makeBlock.deleteConfirmation;
+                                block.oldDeleteBlockDefinition();
+                                SnapTranslator.dict[SnapTranslator.language][key] = oldMessage;
+                            } else {
+                                block.oldDeleteBlockDefinition();
+                            }
+                        }
+                    }
 
                     if (currentMicroworld().makeBlock.paletteEditButton) {
                         var editButton = new PushButtonMorph(
