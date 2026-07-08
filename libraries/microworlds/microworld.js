@@ -932,6 +932,9 @@ MicroWorld.prototype.updateFreshPaletteFunction = function () {
         var palette = this.oldFreshPalette(category);
 
         if (currentMicroworld() && currentMicroworld().isActive) {
+
+            currentMicroworld().scaleButton(palette.allChildren().find(morph => morph.action === 'makeBlock'));
+
             palette.allChildren()
                 .filter(morph => myself.hiddenPaletteActions.includes(morph.action)) // only get items to hide
                 .forEach(morph => {
@@ -1808,8 +1811,19 @@ MicroWorld.prototype.makeButton = function (definition, area) {
         button.fixLayout();
     }
 
+    this.scaleButton(button);
+
     return button;
 };
+
+MicroWorld.prototype.scaleButton = function(buttonMorph) {
+     const scale = SyntaxElementMorph.prototype.scale;
+
+     buttonMorph.fontSize = scale * 10;
+     buttonMorph.padding = scale * 3;
+
+     buttonMorph.fixLayout();
+}
 
 MicroWorld.prototype.findMenuItem = function (items, itemLabel) {
     if (itemLabel === 'duplicate single block') {
