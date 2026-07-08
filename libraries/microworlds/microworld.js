@@ -1,4 +1,4 @@
-// Update 2024-07-26
+// Update 2026-07-08
 var ide = world.children.find(child => {
         return child instanceof IDE_Morph;
     }),
@@ -138,13 +138,25 @@ SnapExtensions.primitives.set(
 )
 
 SnapExtensions.primitives.set(
+    // renamed broadcastAfterTranslate to broadcastAfterReload for more general purposes
+    // this is here for backward compatibility with the old version of the block
     prefix + 'set_broadcast_after_translate(message)',
     (message) => {
         doIfMicroworld(microworld => {
-            microworld.setBroadcastAfterTranslate(message);
+            microworld.setBroadcastAfterReload(message);
         })
     }
 )
+
+SnapExtensions.primitives.set(
+    prefix + 'set_broadcast_after_reload(message)',
+    (message) => {
+        doIfMicroworld(microworld => {
+            microworld.setBroadcastAfterReload(message);
+        })
+    }
+)
+
 
 SnapExtensions.primitives.set(
     prefix + 'set_loading_screen_after_translate(showLoading)',
@@ -324,6 +336,15 @@ SnapExtensions.primitives.set(
     }
 )
 
+SnapExtensions.primitives.set(
+    prefix + 'set_blocks_scale(scale, broadcastAfterDone)',
+    scale => {
+        doIfMicroworld(microworld => {
+            microworld.setBlocksScale(scale, message);
+        })
+    }
+)
+
 // Exposes some of the getters/setters library so we can do this without enabling JS
 // Only exposes settings currently used in microworlds
 SnapExtensions.primitives.set(
@@ -405,8 +426,14 @@ MicroWorld.prototype.setEditableBlocks = function (specs) {
     this.editableBlocks = specs;
 }
 
-MicroWorld.prototype.setBroadcastAfterTranslate = function (message) {
-    this.broadcastAfterTranslate = message;
+MicroWorld.prototype.setBroadcastAfterReload = function (message) {
+    if (!message) {
+        message = '';
+    } else if (Array.isArray(message)) {
+        message = message[0];
+    }
+
+    this.broadcastAfterReload = message;
 }
 
 MicroWorld.prototype.setLoadingScreenAfterTranslate = function (showLoading) {
@@ -581,7 +608,7 @@ MicroWorld.prototype.init = function (ide) {
     this.isLoading = false;
     this.isActive = false;
     this.suppressedKeyEvents = [];
-    this.broadcastAfterTranslate = '';
+    this.broadcastAfterReload = '';
     this.loadingScreenAfterTranslate = false;
 
     // backup settings for exiting microworld
@@ -628,6 +655,8 @@ MicroWorld.prototype.enter = function () {
     this.updateLoadFunctions();
     this.updateFreshPaletteFunction();
 
+    this.updateSetBlocksScaleFunction();
+
     this.updateMakeBlockFlow();
 
     this.addBeButtonFunction();
@@ -655,19 +684,12 @@ MicroWorld.prototype.enter = function () {
     const updateTranslateMenu = (items, oldItems) => {
         items.forEach(item => {
             const languageList = MicroWorld.getLanguageList();
-
             const languageLabel = item[0][1],
                 languageCode = languageList[languageLabel];
-
             item[1] = () => {
-
-                this.changeLanguage(languageCode, this.broadcastAfterTranslate, null, this.loadingScreenAfterTranslate);
-
+                this.changeLanguage(languageCode, this.broadcastAfterReload, null, this.loadingScreenAfterTranslate);
             }
-
-
         })
-
         return items;
     }
 
@@ -722,12 +744,6 @@ MicroWorld.prototype.hideLoadingScreen = function () {
 MicroWorld.prototype.changeLanguage = function (languageCode, message, payload, loadingScreen) {
     var ide = this.ide,
         flag = ide.isAppMode;
-
-    if (!message) {
-        message = '';
-    } else if (Array.isArray(message)) {
-        message = message[0];
-    }
 
     const languages = MicroWorld.getLanguageList();
 
@@ -856,7 +872,6 @@ MicroWorld.prototype.updateLoadFunctions = function () {
 
 
 MicroWorld.prototype.updateSerializeFunction = function () {
-
 
     // disable this when refreshing the IDE to avoid lags on UI interactions
     function ignoreSerializeFor(owner, functionName) {
@@ -1026,8 +1041,55 @@ MicroWorld.prototype.updateFreshPaletteFunction = function () {
     StageMorph.prototype.freshPalette = SpriteMorph.prototype.freshPalette;
 }
 
+MicroWorld.prototype.updateSetBlocksScaleFunction = function () {
+    if (!IDE_Morph.prototype.oldSetBlocksScale) {
+        IDE_Morph.prototype.oldSetBlocksScale = IDE_Morph.prototype.setBlocksScale;
 
+        IDE_Morph.prototype.setBlocksScale = function (num) {
 
+            if (!currentMicroworld() || !currentMicroworld().isActive) {
+                return this.oldSetBlocksScale(num);
+            }
+
+            // same as original EXCEPT for the line noted below
+
+            var projectData;
+            this.scene.captureGlobalSettings();
+            if (Process.prototype.isCatchingErrors) {
+                try {
+                    projectData = this.serializer.serialize(
+                        new Project(this.scenes, this.scene)
+                    );
+                } catch (err) {
+                    this.showMessage('Serialization failed: ' + err);
+                }
+            } else {
+                projectData = this.serializer.serialize(
+                    new Project(this.scenes, this.scene)
+                );
+            }
+            SyntaxElementMorph.prototype.setScale(num);
+            CommentMorph.prototype.refreshScale();
+            SpriteMorph.prototype.initBlocks();
+            this.spriteBar.tabBar.tabTo('scripts');
+            this.createCategories();
+            this.categories.refreshEmpty();
+            this.createCorralBar();
+            this.fixLayout();
+
+            const message = currentMicroworld().broadcastAfterReload;
+            console.log(message);
+
+            // modified from original: broadcast
+            this.openProjectString(projectData, ()=> {
+                ide.broadcast(message);
+            });
+
+            this.saveSetting('zoom', num);
+
+        }
+    }
+}
 
 MicroWorldBlockDialogMorph.prototype = new BlockDialogMorph();
 MicroWorldBlockDialogMorph.prototype.constructor = MicroWorldBlockDialogMorph;
