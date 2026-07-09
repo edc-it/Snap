@@ -1821,6 +1821,8 @@ MicroWorld.prototype.scaleButton = function(buttonMorph) {
 
      buttonMorph.fontSize = scale * 10;
      buttonMorph.padding = scale * 3;
+     buttonMorph.corner = scale * 3;
+     buttonMorph.rounding = scale * 9;
 
      buttonMorph.fixLayout();
 }
