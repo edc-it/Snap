@@ -1,4 +1,4 @@
-// Update 2026-07-08
+// Update 2026-07-15
 var ide = world.children.find(child => {
         return child instanceof IDE_Morph;
     }),
@@ -655,6 +655,8 @@ MicroWorld.prototype.enter = function () {
     this.updateLoadFunctions();
     this.updateFreshPaletteFunction();
 
+    this.updateToggleApModeFunction();
+
     this.updateSetBlocksScaleFunction();
 
     this.updateMakeBlockFlow();
@@ -917,6 +919,21 @@ MicroWorld.prototype.updateSerializeFunction = function () {
                 ide.scene.captureGlobalSettings();
             }
             return str;
+        }
+    }
+}
+
+MicroWorld.prototype.updateToggleApModeFunction = function() {
+    var myself = this;
+    if(!IDE_Morph.prototype.oldToggleAppMode) {
+        IDE_Morph.prototype.oldToggleAppMode = IDE_Morph.prototype.toggleAppMode;
+    }
+
+    IDE_Morph.prototype.toggleAppMode = function(appMode) {
+        this.oldToggleAppMode(appMode);
+
+        if(currentMicroworld() && currentMicroworld().isActive) {
+            myself.hideAllMorphs();
         }
     }
 }
