@@ -2045,6 +2045,14 @@ MicroWorld.prototype.showAppModeButton = function() {
     this.ide.controlBar['appModeButton'].show();
 }
 
+MicroWorld.prototype.hideCloudButton = function() {
+    this.ide.controlBar['cloudButton'].hide();
+}
+
+MicroWorld.prototype.showCloudButton = function() {
+    this.ide.controlBar['cloudButton'].show();
+}
+
 MicroWorld.prototype.hideSpriteBar = function () {
     var ide = this.ide;
 
