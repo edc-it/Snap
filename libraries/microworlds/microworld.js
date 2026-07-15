@@ -579,6 +579,7 @@ MicroWorld.prototype.init = function (ide) {
         stageContextMenu: ['edit', 'show all', 'pic...', '0', 'pen trails', 'svg...'],
         spriteContextMenu: ['duplicate', 'clone', '0', 'delete', 'move', 'rotate', 'pivot', 'edit', 'detatch all parts', 'export...'],
         settingsMenu: ['Language...', 'Zoom blocks...', 'Fade blocks', 'Stage size...', 'Dragging threshold...', 'Microphone resolution...', 'JavaScript extensions', 'Extension blocks', 'Retina display support', 'Input sliders', 'Turbo mode', 'Visible stepping', 'Log pen vectors', 'Ternary Boolean slots', 'Camera support', 'Blurred shadows', 'Zebra coloring', 'Dynamic input labels', 'Prefer empty slot drops', 'Long form input dialog', 'Plain prototype labels', 'Clicking sound', 'Animations', 'Rasterize SVGs', 'Flat design', 'Nested auto-wrapping', 'Sprite Nesting', 'First-Class Sprites', 'Keyboard Editing', 'Table support', 'Table lines', 'Live coding support', 'JIT compiler support', 'Thread safe scripts', 'Flat line ends', 'Codification support', 'Inheritance support', 'Hyper blocks support', 'Single palette', 'Show categories', 'Show buttons', 'Persist linked sublist IDs', 'Enable command drops in all rings', 'HSL pen color model', 'Disable click-to-run', 'Disable dragging data'],
+        cloudMenu: ['Login...', 'Signup...', 'Reset Password...', 'Resend Verification Email...', 'Logout', 'Change Password...', 'Open in Community Site'],
         languageMenu: Object.keys(MicroWorld.getLanguageList())
     }
 
@@ -695,10 +696,23 @@ MicroWorld.prototype.enter = function () {
         return items;
     }
 
+    const updateCloudMenu = (items, oldItems) => {
+
+        if(this.menus.cloudMenu.includes('Logout')) {
+            const logoutItem = oldItems.find(item => item[1] === 'logout');
+            if(logoutItem) {
+                items.unshift(logoutItem);
+            }
+        }
+
+        return items;
+    }
+
     // intercept menus
     this.changeMenu(IDE_Morph.prototype, 'projectMenu', 'projectMenu', true);
     this.changeMenu(IDE_Morph.prototype, 'settingsMenu', 'settingsMenu', true);
     this.changeMenu(IDE_Morph.prototype, 'languageMenu', 'languageMenu', true, updateTranslateMenu);
+    this.changeMenu(IDE_Morph.prototype, 'cloudMenu', 'cloudMenu', true, updateCloudMenu);
     this.changeMenu(BlockMorph.prototype, 'userMenu', 'blockContextMenu', false);
     this.changeMenu(ScriptsMorph.prototype, 'userMenu', 'scriptsContextMenu', false);
     this.changeMenu(StageMorph.prototype, 'userMenu', 'stageContextMenu', false);
