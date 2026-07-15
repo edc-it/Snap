@@ -1098,7 +1098,6 @@ MicroWorld.prototype.updateSetBlocksScaleFunction = function () {
             this.fixLayout();
 
             const message = currentMicroworld().broadcastAfterReload;
-            console.log(message);
 
             // modified from original: broadcast
             this.openProjectString(projectData, ()=> {
