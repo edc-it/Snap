@@ -2038,6 +2038,14 @@ MicroWorld.prototype.showPauseButton = function () {
     this.ide.controlBar['pauseButton'].show();
 };
 
+MicroWorld.prototype.hideAppModeButton = function() {
+    this.ide.controlBar['appModeButton'].hide();
+}
+
+MicroWorld.prototype.showAppModeButton = function() {
+    this.ide.controlBar['appModeButton'].show();
+}
+
 MicroWorld.prototype.hideSpriteBar = function () {
     var ide = this.ide;
 
