@@ -414,6 +414,15 @@ function MicroWorld(ide) {
     this.init(ide);
 }
 
+MicroWorld.getBlockDefinition = function (block, rcvr) {
+    if (block.isGlobal) {
+        return block.definition;
+    }
+    var receiver = rcvr || (block.scriptTarget && block.scriptTarget(true)) || ide.currentSprite
+    return receiver ? receiver.getMethod(block.blockSpec) : null;
+
+}
+
 MicroWorld.prototype.setBlockSpecs = function (specs) {
     this.blockSpecs = specs;
     if (this.isActive) {
@@ -669,7 +678,7 @@ MicroWorld.prototype.enter = function () {
         // decide if a block should be editable
         if (
             // all blocks created in the microworld are editable
-            (block?.definition?.codeHeader === 'microworld'
+            (MicroWorld.getBlockDefinition(block)?.codeHeader === 'microworld'
                 // but if we don't allow editing block types, only allow when block isn't a prototype
                 && (currentMicroworld().makeBlock.editBlockTypeInEditor || !block.isPrototype))
             // check if all blocks are editable
@@ -972,7 +981,7 @@ MicroWorld.prototype.updateFreshPaletteFunction = function () {
 
 
             palette.allChildren()
-                .filter(child => child?.definition?.codeHeader === 'microworld')
+                .filter(child => MicroWorld.getBlockDefinition(child, this)?.codeHeader === 'microworld')
                 .forEach(block => {
                     var x = block.bounds.corner.x + 5,
                         y = block.bounds.origin.y - 2;
@@ -1549,7 +1558,7 @@ MicroWorld.prototype.updateCustomBlockTemplateFunction = function () {
                     if (block === "=") {
                         return false;
                     }
-                    if (block.definition && block.definition.codeHeader && block.definition.codeHeader === 'microworld') {
+                    if (MicroWorld.getBlockDefinition(block, this)?.codeHeader === 'microworld') {
                         return true;
                     }
 
