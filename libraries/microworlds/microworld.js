@@ -508,23 +508,23 @@ MicroWorld.prototype.setKeyboard = function (keyboard) {
 }
 
 MicroWorld.prototype.makeBlock = {
-        nameBlockTitle: localize('Make a block'),
-        defaultCategory: null,
-        showCategories: true,
-        defaultType: 'command',
-        showTypes: true,
-        isGlobal: true,
-        showScopes: true,
-        editorCommentText: null,
-        paletteEditButton: false,
-        paletteDeleteButton: false,
-        deleteConfirmation: null,
-        applyButtonInEditor: true,
-        editBlockTypeInEditor: true,
-        warnOnEmptyScript: null
-    }
+    nameBlockTitle: localize('Make a block'),
+    defaultCategory: null,
+    showCategories: true,
+    defaultType: 'command',
+    showTypes: true,
+    isGlobal: true,
+    showScopes: true,
+    editorCommentText: null,
+    paletteEditButton: false,
+    paletteDeleteButton: false,
+    deleteConfirmation: null,
+    applyButtonInEditor: true,
+    editBlockTypeInEditor: true,
+    warnOnEmptyScript: null
+}
 
-MicroWorld.prototype.setMakeBlock = function(
+MicroWorld.prototype.setMakeBlock = function (
     nameBlockTitle = MicroWorld.prototype.makeBlock.nameBlockTitle,
     defaultCategory = MicroWorld.prototype.makeBlock.defaultCategory,
     showCategories = MicroWorld.prototype.makeBlock.showCategories,
@@ -539,7 +539,6 @@ MicroWorld.prototype.setMakeBlock = function(
     applyButtonInEditor = MicroWorld.prototype.makeBlock.applyButtonInEditor,
     editBlockTypeInEditor = MicroWorld.prototype.makeBlock.editBlockTypeInEditor,
     warnOnEmptyScript = MicroWorld.prototype.makeBlock.warnOnEmptyScript,
-
 ) {
     this.makeBlock = {
         nameBlockTitle,
@@ -560,7 +559,6 @@ MicroWorld.prototype.setMakeBlock = function(
 
     this.refreshLayouts();
 }
-
 
 
 MicroWorld.prototype.init = function (ide) {
@@ -671,7 +669,7 @@ MicroWorld.prototype.enter = function () {
         // decide if a block should be editable
         if (
             // all blocks created in the microworld are editable
-            (block?.definition?.codeHeader ==='microworld'
+            (block?.definition?.codeHeader === 'microworld'
                 // but if we don't allow editing block types, only allow when block isn't a prototype
                 && (currentMicroworld().makeBlock.editBlockTypeInEditor || !block.isPrototype))
             // check if all blocks are editable
@@ -698,9 +696,9 @@ MicroWorld.prototype.enter = function () {
 
     const updateCloudMenu = (items, oldItems) => {
 
-        if(this.menus.cloudMenu.includes('Logout')) {
+        if (this.menus.cloudMenu.includes('Logout')) {
             const logoutItem = oldItems.find(item => item[1] === 'logout');
-            if(logoutItem) {
+            if (logoutItem) {
                 items.unshift(logoutItem);
             }
         }
@@ -937,16 +935,16 @@ MicroWorld.prototype.updateSerializeFunction = function () {
     }
 }
 
-MicroWorld.prototype.updateToggleApModeFunction = function() {
+MicroWorld.prototype.updateToggleApModeFunction = function () {
     var myself = this;
-    if(!IDE_Morph.prototype.oldToggleAppMode) {
+    if (!IDE_Morph.prototype.oldToggleAppMode) {
         IDE_Morph.prototype.oldToggleAppMode = IDE_Morph.prototype.toggleAppMode;
     }
 
-    IDE_Morph.prototype.toggleAppMode = function(appMode) {
+    IDE_Morph.prototype.toggleAppMode = function (appMode) {
         this.oldToggleAppMode(appMode);
 
-        if(currentMicroworld() && currentMicroworld().isActive) {
+        if (currentMicroworld() && currentMicroworld().isActive) {
             myself.hideAllMorphs();
         }
     }
@@ -973,7 +971,7 @@ MicroWorld.prototype.updateFreshPaletteFunction = function () {
                 });
 
 
-                 palette.allChildren()
+            palette.allChildren()
                 .filter(child => child?.definition?.codeHeader === 'microworld')
                 .forEach(block => {
                     var x = block.bounds.corner.x + 5,
@@ -1114,7 +1112,7 @@ MicroWorld.prototype.updateSetBlocksScaleFunction = function () {
             const message = currentMicroworld().broadcastAfterReload;
 
             // modified from original: broadcast
-            this.openProjectString(projectData, ()=> {
+            this.openProjectString(projectData, () => {
                 ide.broadcast(message);
             });
 
@@ -1150,7 +1148,7 @@ function MicroWorldBlockDialogMorph(
     );
 }
 
-MicroWorldBlockDialogMorph.prototype.init = function(
+MicroWorldBlockDialogMorph.prototype.init = function (
     target,
     action,
     environment,
@@ -1165,39 +1163,39 @@ MicroWorldBlockDialogMorph.prototype.init = function(
     this.showTypes = showTypes;
     this.showScopes = showScopes;
     MicroWorldBlockDialogMorph.uber.init.call(this, target, action, environment);
-    if(!showCategories) {
+    if (!showCategories) {
         this.removeChild(this.categories);
         this.categories.setHeight(-1 * this.padding);
     }
-    if(!showTypes) {
+    if (!showTypes) {
         this.removeChild(this.types);
         this.types.setHeight(-1 * this.padding);
     }
-    if(!showScopes) {
+    if (!showScopes) {
         this.removeChild(this.scopes);
         this.scopes.setHeight(-1 * this.padding);
     }
     this.fixLayout();
     this.blockType = defaultType || this.blockType;
-    if(isGlobal === false) {
+    if (isGlobal === false) {
         this.setScope('local');
     }
 }
 
-MicroWorldBlockDialogMorph.prototype.createCategoryButtons = function() {
-    if(this.showCategories) {
+MicroWorldBlockDialogMorph.prototype.createCategoryButtons = function () {
+    if (this.showCategories) {
         MicroWorldBlockDialogMorph.uber.createCategoryButtons.call(this);
     }
 }
 
-MicroWorldBlockDialogMorph.prototype.fixCategoriesLayout = function() {
-    if(this.showCategories) {
+MicroWorldBlockDialogMorph.prototype.fixCategoriesLayout = function () {
+    if (this.showCategories) {
         MicroWorldBlockDialogMorph.uber.fixCategoriesLayout.call(this);
     }
 }
 
-MicroWorldBlockDialogMorph.prototype.createTypeButtons = function() {
-    if(this.showTypes) {
+MicroWorldBlockDialogMorph.prototype.createTypeButtons = function () {
+    if (this.showTypes) {
         MicroWorldBlockDialogMorph.uber.createTypeButtons.call(this);
     }
 }
@@ -1225,7 +1223,7 @@ MicroWorld.prototype.updateMakeBlockFlow = function () {
                     null,
                     definition => {
                         const comment = currentMicroworld().makeBlock.editorCommentText;
-                        if(comment) {
+                        if (comment) {
                             definition.comment = new CommentMorph(comment);
                         }
                         if (definition.spec !== '') {
@@ -1271,44 +1269,43 @@ MicroWorld.prototype.updateMakeBlockFlow = function () {
         }
     }
 
-     if (!BlockEditorMorph.prototype.oldPopUp) {
-         BlockEditorMorph.prototype.oldPopUp = BlockEditorMorph.prototype.popUp;
+    if (!BlockEditorMorph.prototype.oldPopUp) {
+        BlockEditorMorph.prototype.oldPopUp = BlockEditorMorph.prototype.popUp;
 
-         BlockEditorMorph.prototype.popUp = function () {
-             BlockEditorMorph.prototype.oldPopUp.call(this);
-             if (currentMicroworld() && currentMicroworld().isActive) {
+        BlockEditorMorph.prototype.popUp = function () {
+            BlockEditorMorph.prototype.oldPopUp.call(this);
+            if (currentMicroworld() && currentMicroworld().isActive) {
 
-                  const hat = this.body.contents.children.find(child => child instanceof PrototypeHatBlockMorph);
+                const hat = this.body.contents.children.find(child => child instanceof PrototypeHatBlockMorph);
 
-                 if(!this.oldAccept) {
-                     this.oldAccept = this.accept;
-                     const warnOnEmptyScript = currentMicroworld().makeBlock.warnOnEmptyScript;
-                     this.accept = function() {
-                         if(warnOnEmptyScript && hat.children.length < 2) {
-                             ide.inform('', warnOnEmptyScript)
-                         }
-                         else {
-                             this.oldAccept.call(this)
-                         }
-                     }
-                 }
+                if (!this.oldAccept) {
+                    this.oldAccept = this.accept;
+                    const warnOnEmptyScript = currentMicroworld().makeBlock.warnOnEmptyScript;
+                    this.accept = function () {
+                        if (warnOnEmptyScript && hat.children.length < 2) {
+                            ide.inform('', warnOnEmptyScript)
+                        } else {
+                            this.oldAccept.call(this)
+                        }
+                    }
+                }
 
-                 if (!currentMicroworld().makeBlock.applyButtonInEditor) {
-                     const apply = this.buttons.children.find(e => e.action === "updateDefinition");
-                     this.buttons.removeChild(apply);
-                     this.buttons.fixLayout();
-                     this.fixLayout();
-                 }
+                if (!currentMicroworld().makeBlock.applyButtonInEditor) {
+                    const apply = this.buttons.children.find(e => e.action === "updateDefinition");
+                    this.buttons.removeChild(apply);
+                    this.buttons.fixLayout();
+                    this.fixLayout();
+                }
 
-                 if (!currentMicroworld().makeBlock.editBlockTypeInEditor) {
-                     if (hat) {
-                         hat.mouseClickLeft = () => {
-                         };
-                     }
-                 }
-             }
-         }
-     }
+                if (!currentMicroworld().makeBlock.editBlockTypeInEditor) {
+                    if (hat) {
+                        hat.mouseClickLeft = () => {
+                        };
+                    }
+                }
+            }
+        }
+    }
 }
 
 MicroWorld.prototype.updateGetInputFunction = function () {
@@ -1846,15 +1843,15 @@ MicroWorld.prototype.makeButton = function (definition, area) {
     return button;
 };
 
-MicroWorld.prototype.scaleButton = function(buttonMorph) {
-     const scale = SyntaxElementMorph.prototype.scale;
+MicroWorld.prototype.scaleButton = function (buttonMorph) {
+    const scale = SyntaxElementMorph.prototype.scale;
 
-     buttonMorph.fontSize = scale * 10;
-     buttonMorph.padding = scale * 3;
-     buttonMorph.corner = scale * 3;
-     buttonMorph.rounding = scale * 9;
+    buttonMorph.fontSize = scale * 10;
+    buttonMorph.padding = scale * 3;
+    buttonMorph.corner = scale * 3;
+    buttonMorph.rounding = scale * 9;
 
-     buttonMorph.fixLayout();
+    buttonMorph.fixLayout();
 }
 
 MicroWorld.prototype.findMenuItem = function (items, itemLabel) {
@@ -2051,19 +2048,19 @@ MicroWorld.prototype.showPauseButton = function () {
     this.ide.controlBar['pauseButton'].show();
 };
 
-MicroWorld.prototype.hideAppModeButton = function() {
+MicroWorld.prototype.hideAppModeButton = function () {
     this.ide.controlBar['appModeButton'].hide();
 }
 
-MicroWorld.prototype.showAppModeButton = function() {
+MicroWorld.prototype.showAppModeButton = function () {
     this.ide.controlBar['appModeButton'].show();
 }
 
-MicroWorld.prototype.hideCloudButton = function() {
+MicroWorld.prototype.hideCloudButton = function () {
     this.ide.controlBar['cloudButton'].hide();
 }
 
-MicroWorld.prototype.showCloudButton = function() {
+MicroWorld.prototype.showCloudButton = function () {
     this.ide.controlBar['cloudButton'].show();
 }
 
