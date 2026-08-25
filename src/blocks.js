@@ -300,7 +300,7 @@ SyntaxElementMorph.prototype.setScale = function (num) {
 };
 
 // hard-code initial blocks scale :(
-SyntaxElementMorph.prototype.setScale(1.3);
+SyntaxElementMorph.prototype.setScale(1.5);
 SyntaxElementMorph.prototype.isCachingInputs = false;
 SyntaxElementMorph.prototype.alpha = 1;
 
